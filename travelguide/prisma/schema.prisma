@@ -18,4 +18,71 @@ model Museum {
   name String @unique
   location String
   score Int
+  disableAccessibility Boolean?
+  estimatedDuration Float?
+  price Float
+  currency String
+
+}
+
+model Park {
+  id Int @id @default(autoincrement())
+  name String @unique
+  location String
+  score Int
+  disableAccessibility Boolean?
+  estimatedDuration Float?
+  price Float
+  currency String
+
+}
+
+model Restaurant {
+  id Int @id @default(autoincrement())
+  name String @unique
+  location String
+  score Int
+  disableAccessibility Boolean?
+  estimatedDuration Float?
+  price Float
+  currency String
+
+}
+
+model Mall {
+  id Int @id @default(autoincrement())
+  name String @unique
+  location String
+  score Int
+  disableAccessibility Boolean?
+  estimatedDuration Float?
+  price Float
+  currency String
+
+}
+
+model Sport {
+  id Int @id @default(autoincrement())
+  name String @unique
+  location String
+  score Int
+  disableAccessibility Boolean?
+  estimatedDuration Float?
+  price Float
+  currency String
+
+}
+
+model Activity {
+  id Int @id @default(autoincrement())
+  name String @unique
+  location String
+  score Int
+  disableAccessibility Boolean?
+  estimatedDuration Float?
+  price Float
+  currency String
+  theme String
+  dateStart DateTime
+  dateEnd DateTime
 }
