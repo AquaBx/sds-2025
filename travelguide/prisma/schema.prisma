@@ -13,69 +13,24 @@ datasource db {
   url      = "file:./db.db" //env("DATABASE_URL")
 }
 
-model Museum {
-  id Int @id @default(autoincrement())
-  name String @unique
-  location String
-  score Int
-  disableAccessibility Boolean?
-  estimatedDuration Float?
-  price Float
-  currency String
-
+enum Type {
+  Museum
+  Sport
+  Mall
+  Restaurant
+  Park
 }
 
-model Park {
+model Picture {
   id Int @id @default(autoincrement())
-  name String @unique
-  location String
-  score Int
-  disableAccessibility Boolean?
-  estimatedDuration Float?
-  price Float
-  currency String
-
-}
-
-model Restaurant {
-  id Int @id @default(autoincrement())
-  name String @unique
-  location String
-  score Int
-  disableAccessibility Boolean?
-  estimatedDuration Float?
-  price Float
-  currency String
-
-}
-
-model Mall {
-  id Int @id @default(autoincrement())
-  name String @unique
-  location String
-  score Int
-  disableAccessibility Boolean?
-  estimatedDuration Float?
-  price Float
-  currency String
-
-}
-
-model Sport {
-  id Int @id @default(autoincrement())
-  name String @unique
-  location String
-  score Int
-  disableAccessibility Boolean?
-  estimatedDuration Float?
-  price Float
-  currency String
-
+  url String
+  activity Activity @relation(fields: [id], references: [id])
 }
 
 model Activity {
   id Int @id @default(autoincrement())
   name String @unique
+  type Type?
   location String
   score Int
   disableAccessibility Boolean?
@@ -83,6 +38,8 @@ model Activity {
   price Float
   currency String
   theme String
-  dateStart DateTime
-  dateEnd DateTime
+  availableFrom DateTime?
+  availableUntil DateTime?
+  description String
+  picture Picture[]
 }
