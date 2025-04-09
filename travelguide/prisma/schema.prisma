@@ -13,9 +13,33 @@ datasource db {
   url      = "file:./db.db" //env("DATABASE_URL")
 }
 
-model Museum {
+enum Type {
+  Museum
+  Sport
+  Mall
+  Restaurant
+  Park
+}
+
+model Picture {
+  id Int @id @default(autoincrement())
+  url String
+  activity Activity @relation(fields: [id], references: [id])
+}
+
+model Activity {
   id Int @id @default(autoincrement())
   name String @unique
+  type Type?
   location String
   score Int
+  disableAccessibility Boolean?
+  estimatedDuration Float?
+  price Float
+  currency String
+  theme String
+  availableFrom DateTime?
+  availableUntil DateTime?
+  description String
+  picture Picture[]
 }
