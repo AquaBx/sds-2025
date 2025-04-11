@@ -38,8 +38,8 @@ model Activity {
   price Float
   currency String
   theme String
-  openingTime DateTime?
-  closingTime DateTime?
+  openingTime String?
+  closingTime String?
   availableFrom DateTime?
   availableUntil DateTime?
   description String
