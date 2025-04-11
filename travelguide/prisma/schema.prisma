@@ -29,8 +29,8 @@ model Picture {
 
 model Activity {
   id Int @id @default(autoincrement())
-  name String @unique
-  type Type?
+  name String
+  type Type
   location String
   score Int
   disableAccessibility Boolean?
@@ -38,6 +38,8 @@ model Activity {
   price Float
   currency String
   theme String
+  openingTime DateTime?
+  closingTime DateTime?
   availableFrom DateTime?
   availableUntil DateTime?
   description String
