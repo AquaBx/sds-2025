@@ -27,11 +27,20 @@ model Picture {
   activity Activity @relation(fields: [id], references: [id])
 }
 
+model Tag {
+  id       Int      @id @default(autoincrement())
+  name     String
+  activity Activity @relation(fields: [activityId], references: [id])
+  activityId Int
+}
+
 model Activity {
   id Int @id @default(autoincrement())
   name String
   type Type
   location String
+  address String
+  tags Tag[]
   score Int
   disableAccessibility Boolean?
   estimatedDuration Float?
