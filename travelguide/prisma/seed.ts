@@ -15,6 +15,10 @@ async function main() {
                 location : p.location,
                 score : p.score,
 				type : p.type,
+				address : p.address,
+				tags: {
+					create: p.tags.map((t: string) => ({ name: t }))
+				},
 				disableAccessibility : p.disableAccessibility,
 				estimatedDuration : p.estimatedDuration,
 				price : p.price,
