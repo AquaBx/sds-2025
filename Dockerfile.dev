@@ -1,0 +1,19 @@
+ARG NODE_VERSION=22.14.0
+
+FROM node:${NODE_VERSION}-alpine
+
+WORKDIR /app
+
+COPY . .
+
+WORKDIR /app/travelguide
+
+EXPOSE 5173
+
+RUN apk add git
+
+RUN npm install
+
+CMD npx prisma migrate dev --name init \
+    && npx prisma db push \
+    && npm run dev;
