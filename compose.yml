@@ -8,7 +8,6 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-
   db:
     image: postgres
     restart: always
@@ -30,7 +29,7 @@ services:
 
   server:
     build:
-      context: .
+      context: ./
     environment:
       NODE_ENV: production
     ports:
@@ -38,8 +37,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-        
 
 volumes:
   db-data:
-
