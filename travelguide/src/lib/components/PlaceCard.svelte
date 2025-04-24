@@ -26,13 +26,24 @@
 		<div class="mb-1 text-2xl font-semibold">{place.name}</div>
 		<div class="flex flex-1 flex-row ">
 			<div class="mb-2 text-base text-gray-600">{place.theme}</div>
+			{#if place.disableAccessibility}
+				<div class="ml-auto mb-2 flex items-center font-semibold gap-1 text-sm ">
+					<img src= "images/icons/disabled.png" alt="disabled" class="w-4" />
+				</div>
+				<div class="ml-2 mb-2 flex items-center font-semibold gap-1 text-sm ">
+				
+					<img src= "images/icons/hourglass.png" alt="hourglass" class="w-4" />
+					<p>{place.estimatedDuration} {place.estimatedDuration <= 1 ? 'hour' : 'hours'}</p>
+				</div>
 			
+			{:else}
 
 			<div class="ml-auto mb-2 flex items-center font-semibold gap-1 text-sm ">
 				
 				<img src= "images/icons/hourglass.png" alt="hourglass" class="w-4" />
-				<p>{place.estimatedDuration} hour(s)</p>
+				<p>{place.estimatedDuration} {place.estimatedDuration <= 1 ? 'hour' : 'hours'}</p>
 			</div>
+			{/if}
 		</div>
 		<div class="text-sm leading-relaxed text-gray-800">{place.description}</div>
 	</div>
