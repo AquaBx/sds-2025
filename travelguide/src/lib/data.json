@@ -5,7 +5,7 @@
         "type": "Park",
         "address": "ul. Matejki 18",
         "tags": [
-            "nature"
+            "Nature"
         ],
         "score": 3,
         "disableAccessibility": true,
@@ -28,8 +28,8 @@
         "type": "Park",
         "address": "ul. Krańcowa 81",
         "tags": [
-            "nature",
-            "science"
+            "Nature",
+            "Science"
         ],
         "score": 4,
         "disableAccessibility": true,
@@ -52,7 +52,7 @@
         "type": "Sport",
         "address": "ul. Bułgarska 17",
         "tags": [
-            "sport"
+            "Sport"
         ],
         "score": 4,
         "disableAccessibility": true,
@@ -74,7 +74,7 @@
         "location": "",
         "type": "Hotel",
         "address": "plac Wolnosci 16, Poznan, Poland 61-739",
-        "tags": [],
+        "tags": ["Relaxation"],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 0,
@@ -95,7 +95,9 @@
         "location": "",
         "type": "Hotel",
         "address": "Bukowska 3/9, Poznan, Poland, 60-809",
-        "tags": [],
+        "tags": [
+            "Relaxation"
+        ],
         "score": 5,
         "disableAccessibility": true,
         "estimatedDuration": 0,
@@ -116,7 +118,9 @@
         "location": "",
         "type": "Hotel",
         "address": "ul. Wodna 13, 61-782 Poznań",
-        "tags": [],
+        "tags": [
+            "Relaxation"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 0,
@@ -137,7 +141,9 @@
         "location": "",
         "type": "Hotel",
         "address": "ul. Wagrowska 6, 61-369 Poznań",
-        "tags": [],
+        "tags": [
+            "Relaxation"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 0,
@@ -158,7 +164,9 @@
         "location": "",
         "type": "Hotel",
         "address": "ul. Św. Marcin 2, Poznan City Center, Poznan, Greater Poland, Poland, 61-803",
-        "tags": [],
+        "tags": [
+            "Relaxation"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 0,
@@ -179,7 +187,9 @@
         "location": "",
         "type": "Museum",
         "address": "Aleje Karola Marcinkowskiego 9, 61-745 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "History"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 1,
@@ -200,7 +210,9 @@
         "location": "",
         "type": "Museum",
         "address": "aleja Armii Poznań, 61-663 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "History"
+        ],
         "score": 4,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -221,7 +233,10 @@
         "location": "",
         "type": "Museum",
         "address": "Wodna 27, 61-781 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "History",
+            "Science"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -242,7 +257,10 @@
         "location": "",
         "type": "Museum",
         "address": "Góra Przemysła 1, 61-768 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "History",
+            "Art"
+        ],
         "score": 2,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -263,7 +281,9 @@
         "location": "",
         "type": "Museum",
         "address": "ul, 3 Pułku Lotniczego 4, 60-421 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "History"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -284,7 +304,9 @@
         "location": "",
         "type": "Parcs",
         "address": "aleja Armii Poznań, 61-001 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Nature"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 3,
@@ -305,7 +327,9 @@
         "location": "",
         "type": "Parcs",
         "address": "60-619 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Nature"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -326,7 +350,9 @@
         "location": "",
         "type": "Parcs",
         "address": "Śniadeckich 30, 61-001 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Nature"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -347,7 +373,9 @@
         "location": "",
         "type": "Parcs",
         "address": "7, 60-101 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Nature"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -368,7 +396,9 @@
         "location": "",
         "type": "Parcs",
         "address": "61-253 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Nature"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -389,7 +419,10 @@
         "location": "",
         "type": "Mall",
         "address": "Pleszewska 1, 61-136 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Shopping",
+            "Food"
+        ],
         "score": 5,
         "disableAccessibility": true,
         "estimatedDuration": 3,
@@ -397,7 +430,7 @@
         "closingTime": "22:00",
         "price": 0,
         "currency": "PLN",
-        "theme": "shopping",
+        "theme": "Shopping",
         "description": "A large, contemporary mall featuring over 250 shops, plus casual cafes & restaurants.",
         "picture": [
             {
@@ -410,7 +443,10 @@
         "location": "",
         "type": "Mall",
         "address": "Półwiejska 42, 61-888 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Shopping",
+            "Food"
+        ],
         "score": 0,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -418,7 +454,7 @@
         "closingTime": "21:00",
         "price": 0,
         "currency": "PLN",
-        "theme": "shopping",
+        "theme": "Shopping",
         "description": "200 stores & restaurants inside a 19th-century brick brewery studded with sculptures.",
         "picture": [
             {
@@ -431,7 +467,10 @@
         "location": "",
         "type": "Mall",
         "address": "Stanisława Matyi 2, 61-586 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Shopping",
+            "Food"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -439,7 +478,7 @@
         "closingTime": "21:00",
         "price": 0,
         "currency": "PLN",
-        "theme": "shopping",
+        "theme": "Shopping",
         "description": "Large shopping center featuring familiar department stores, boutiques, cafes & food court fare.",
         "picture": [
             {
@@ -452,7 +491,9 @@
         "location": "",
         "type": "Mall",
         "address": "Drużbickiego 2, 61-693 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Shopping"
+        ],
         "score": 2,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -460,7 +501,7 @@
         "closingTime": "21:00",
         "price": 0,
         "currency": "PLN",
-        "theme": "shopping",
+        "theme": "Shopping",
         "description": "Shopping mall with well-known fashion & electronics retailers, a food court & a movie theater.",
         "picture": [
             {
@@ -473,7 +514,7 @@
         "location": "",
         "type": "Mall",
         "address": "plac Wiosny Ludów 2, 61-831 Poznań, Pologne",
-        "tags": [],
+        "tags": ["Shopping"],
         "score": 2,
         "disableAccessibility": true,
         "estimatedDuration": 1,
@@ -481,7 +522,7 @@
         "closingTime": "21:00",
         "price": 0,
         "currency": "PLN",
-        "theme": "shopping",
+        "theme": "Shopping",
         "description": "Spacious shopping complex providing a variety of stores, casual eateries & services.",
         "picture": [
             {
@@ -489,180 +530,15 @@
             }
         ]
     },
-    {
-        "name": "Park Cytadela",
-        "location": "",
-        "type": "Parcs",
-        "address": "aleja Armii Poznań, 61-001 Poznań, Pologne",
-        "tags": [],
-        "score": 3,
-        "disableAccessibility": true,
-        "estimatedDuration": 3,
-        "openingTime": "0:00",
-        "closingTime": "0:00",
-        "price": 0,
-        "currency": "PLN",
-        "theme": "Nature",
-        "description": "The largest park in Poznań, built on the site of the former Fort Winiary. It houses two museums and offers attractions for families.",
-        "picture": [
-            {
-                "url": ""
-            }
-        ]
-    },
-    {
-        "name": "Woodrow Wilson Park",
-        "location": "",
-        "type": "Parcs",
-        "address": "Śniadeckich 30, 61-001 Poznań, Pologne",
-        "tags": [],
-        "score": 3,
-        "disableAccessibility": true,
-        "estimatedDuration": 2,
-        "openingTime": "5:00",
-        "closingTime": "22:00",
-        "price": 0,
-        "currency": "PLN",
-        "theme": "Nature",
-        "description": "A park that once served as a botanical garden. It features a bust of President Woodrow Wilson and a small concert stage.",
-        "picture": [
-            {
-                "url": "https://s.inyourpocket.com/gallery/193533.jpg"
-            }
-        ]
-    },
-    {
-        "name": "Adam Mickiewicz Park",
-        "location": "",
-        "type": "Parcs",
-        "address": "7, 60-101 Poznań, Pologne",
-        "tags": [],
-        "score": 3,
-        "disableAccessibility": true,
-        "estimatedDuration": 2,
-        "openingTime": "0:00",
-        "closingTime": "0:00",
-        "price": 0,
-        "currency": "PLN",
-        "theme": "Nature",
-        "description": "Park of Adam Mickiewicz is one of the six most important and valuable organized green areas in Gubin.",
-        "picture": [
-            {
-                "url": "https://image.bilety24.pl/nf_building_big/building/park-mickiewicza.jpg"
-            }
-        ]
-    },
-    {
-        "name": "Parc Rataje",
-        "location": "",
-        "type": "Parcs",
-        "address": "61-253 Poznań, Pologne",
-        "tags": [],
-        "score": 3,
-        "disableAccessibility": true,
-        "estimatedDuration": 2,
-        "openingTime": "0:00",
-        "closingTime": "0:00",
-        "price": 0,
-        "currency": "PLN",
-        "theme": "Nature",
-        "description": "Second largest park in Poznan.",
-        "picture": [
-            {
-                "url": "https://kierunkowo.pl/wp-content/uploads/2021/11/DSC_3043pix.jpg"
-            }
-        ]
-    },
-    {
-        "name": "Park Cytadela",
-        "location": "",
-        "type": "Parcs",
-        "address": "aleja Armii Poznań, 61-001 Poznań, Pologne",
-        "tags": [],
-        "score": 3,
-        "disableAccessibility": true,
-        "estimatedDuration": 3,
-        "openingTime": "0:00",
-        "closingTime": "0:00",
-        "price": 0,
-        "currency": "PLN",
-        "theme": "Nature",
-        "description": "The largest park in Poznań, built on the site of the former Fort Winiary. It houses two museums and offers attractions for families.",
-        "picture": [
-            {
-                "url": ""
-            }
-        ]
-    },
-    {
-        "name": "Woodrow Wilson Park",
-        "location": "",
-        "type": "Parcs",
-        "address": "Śniadeckich 30, 61-001 Poznań, Pologne",
-        "tags": [],
-        "score": 3,
-        "disableAccessibility": true,
-        "estimatedDuration": 2,
-        "openingTime": "5:00",
-        "closingTime": "22:00",
-        "price": 0,
-        "currency": "PLN",
-        "theme": "Nature",
-        "description": "A park that once served as a botanical garden. It features a bust of President Woodrow Wilson and a small concert stage.",
-        "picture": [
-            {
-                "url": "https://s.inyourpocket.com/gallery/193533.jpg"
-            }
-        ]
-    },
-    {
-        "name": "Adam Mickiewicz Park",
-        "location": "",
-        "type": "Parcs",
-        "address": "7, 60-101 Poznań, Pologne",
-        "tags": [],
-        "score": 3,
-        "disableAccessibility": true,
-        "estimatedDuration": 2,
-        "openingTime": "0:00",
-        "closingTime": "0:00",
-        "price": 0,
-        "currency": "PLN",
-        "theme": "Nature",
-        "description": "Park of Adam Mickiewicz is one of the six most important and valuable organized green areas in Gubin.",
-        "picture": [
-            {
-                "url": "https://image.bilety24.pl/nf_building_big/building/park-mickiewicza.jpg"
-            }
-        ]
-    },
-    {
-        "name": "Parc Rataje",
-        "location": "",
-        "type": "Parcs",
-        "address": "61-253 Poznań, Pologne",
-        "tags": [],
-        "score": 3,
-        "disableAccessibility": true,
-        "estimatedDuration": 2,
-        "openingTime": "0:00",
-        "closingTime": "0:00",
-        "price": 0,
-        "currency": "PLN",
-        "theme": "Nature",
-        "description": "Second largest park in Poznan.",
-        "picture": [
-            {
-                "url": "https://kierunkowo.pl/wp-content/uploads/2021/11/DSC_3043pix.jpg"
-            }
-        ]
-    },
+    
     {
         "name": "Figa",
         "location": "",
         "type": "Restaurents",
         "address": "ul. Wrocławska 27, 61-838 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Food"
+        ],
         "score": 5,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -683,7 +559,9 @@
         "location": "",
         "type": "Restaurents",
         "address": "Święty Marcin 71, 61-808 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Food"
+        ],
         "score": 5,
         "disableAccessibility": true,
         "estimatedDuration": 3,
@@ -704,7 +582,9 @@
         "location": "",
         "type": "Restaurents",
         "address": "Strzelecka 15, 61-845 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Food"
+        ],
         "score": 5,
         "disableAccessibility": true,
         "estimatedDuration": 1,
@@ -725,7 +605,9 @@
         "location": "",
         "type": "Restaurents",
         "address": "Stary Rynek 85, 61-772 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Food"
+        ],
         "score": 5,
         "disableAccessibility": true,
         "estimatedDuration": 1.5,
@@ -746,7 +628,9 @@
         "location": "",
         "type": "Restaurents",
         "address": "Święty Marcin 59/75, 61-808 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Food"
+        ],
         "score": 5,
         "disableAccessibility": true,
         "estimatedDuration": 1,
@@ -767,7 +651,9 @@
         "location": "",
         "type": "Restaurents",
         "address": "Wrocławska 18, 61-837 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Food"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 1,
@@ -788,7 +674,9 @@
         "location": "",
         "type": "Restaurents",
         "address": "Dąbrowskiego 25, 60-572 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Food"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 3,
@@ -809,7 +697,9 @@
         "location": "",
         "type": "Restaurents",
         "address": "Stary Rynek 69/71, 61-772 Poznań, Pologne",
-        "tags": [],
+        "tags": [
+            "Food"
+        ],
         "score": 4,
         "disableAccessibility": true,
         "estimatedDuration": 11.5,
@@ -830,7 +720,9 @@
         "location": "",
         "type": "Restaurents",
         "address": "Różne lokalizacje",
-        "tags": [],
+        "tags": [
+            "Food"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 0.5,
@@ -851,7 +743,9 @@
         "location": "",
         "type": "Sport",
         "address": "rental services along the banks",
-        "tags": [],
+        "tags": [
+            "Sport"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 1,
@@ -872,7 +766,9 @@
         "location": "",
         "type": "Sport",
         "address": "Romana Maya 1, 61-371 Poznań",
-        "tags": [],
+        "tags": [
+            "Sport"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 0,
@@ -893,7 +789,9 @@
         "location": "",
         "type": "Sport",
         "address": "Termalna 1, 61-028 Poznań, Poland",
-        "tags": [],
+        "tags": [
+            "Sport"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -914,7 +812,9 @@
         "location": "",
         "type": "Sport",
         "address": "Stefana Batorego 37, 60-687 Poznań, Poland",
-        "tags": [],
+        "tags": [
+            "Sport"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 2,
@@ -935,7 +835,9 @@
         "location": "",
         "type": "Sport",
         "address": "Binowo 11, 74-105 Stare Czarnowo, Poland",
-        "tags": [],
+        "tags": [
+            "Sport"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 3,
