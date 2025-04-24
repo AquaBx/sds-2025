@@ -5,7 +5,7 @@
 	let budget = $state(50);
 	let start = $state('09:00');
 	let end = $state('17:00');
-	const categories = ['nature', 'history', 'art', 'food', 'sport'];
+	const categories = ['Nature', 'History', 'Art', 'Food', 'Sport', 'Shopping', 'Relaxation'];
 
 	let step = $state(0);
 </script>
