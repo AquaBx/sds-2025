@@ -24,7 +24,16 @@
 	/>
 	<div class="flex flex-1 flex-col justify-center">
 		<div class="mb-1 text-2xl font-semibold">{place.name}</div>
-		<div class="mb-2 text-base text-gray-600">{place.theme}</div>
+		<div class="flex flex-1 flex-row ">
+			<div class="mb-2 text-base text-gray-600">{place.theme}</div>
+			
+
+			<div class="ml-auto mb-2 flex items-center font-semibold gap-1 text-sm ">
+				
+				<img src= "images/icons/hourglass.png" alt="hourglass" class="w-4" />
+				<p>{place.estimatedDuration} hour(s)</p>
+			</div>
+		</div>
 		<div class="text-sm leading-relaxed text-gray-800">{place.description}</div>
 	</div>
 </div>

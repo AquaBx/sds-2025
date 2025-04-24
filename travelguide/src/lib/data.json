@@ -516,7 +516,7 @@
         "address": "plac Wiosny Ludów 2, 61-831 Poznań, Pologne",
         "tags": ["Shopping"],
         "score": 2,
-        "disableAccessibility": true,
+        "disableAccessibility": false,
         "estimatedDuration": 1,
         "openingTime": "10:00",
         "closingTime": "21:00",
@@ -563,7 +563,7 @@
             "Food"
         ],
         "score": 5,
-        "disableAccessibility": true,
+        "disableAccessibility": false,
         "estimatedDuration": 3,
         "openingTime": "13:00",
         "closingTime": "21:00",
