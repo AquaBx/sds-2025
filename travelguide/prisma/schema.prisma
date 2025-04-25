@@ -13,15 +13,6 @@ datasource db {
   url      = "file:./db.db" //env("DATABASE_URL")
 }
 
-enum Type {
-  Hotel
-  Museum
-  Sport
-  Mall
-  Restaurant
-  Park
-}
-
 model Picture {
   id Int @id @default(autoincrement())
   url String
@@ -29,22 +20,36 @@ model Picture {
 }
 
 model Tag {
-  id       Int      @id @default(autoincrement())
-  name     String
-  activity Activity @relation(fields: [activityId], references: [id])
-  activityId Int
+  name     String @id
+  activities Activity[]
+}
+
+model ActivityType {
+  name     String @id
+  activities Activity[]
+}
+
+model City {
+  id Int @id @default(autoincrement())
+  name String
+  zipcode String
+  country String
+  activities Activity[]
 }
 
 model Activity {
   id Int @id @default(autoincrement())
+  cityId Int
+  city City @relation(fields: [cityId], references: [id])
   name String
-  type Type
+  typeName String
+  type ActivityType @relation(fields: [typeName], references: [name])
   location String
   address String
   tags Tag[]
   score Int
-  disableAccessibility Boolean?
-  estimatedDuration Float?
+  disableAccessibility Boolean
+  estimatedDuration Float
   price Float
   currency String
   theme String

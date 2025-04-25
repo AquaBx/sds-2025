@@ -1,7 +1,11 @@
 import { json } from '@sveltejs/kit';
-import data from '$lib/data.json';
-import type { Place } from '$lib/types';
+import prisma from '$lib/prisma';
 
-export const GET = () => {
-  return json({ places: data as Place[] });
+export const GET = async () => {
+  const places = await prisma.activity.findMany({
+    include: {
+      picture: true,
+    },
+  })
+  return json({ places: places });
 };

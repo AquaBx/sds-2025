@@ -1,5 +1,6 @@
 [
     {
+        "city": 1,
         "name": "Palm House",
         "location": "52.4020176;16.9018524",
         "type": "Park",
@@ -23,6 +24,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "New Zoo",
         "location": "52.40052445631582;16.994500254801782",
         "type": "Park",
@@ -47,6 +49,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Enea Stadium",
         "location": "52.39782390864943;16.858122483637462",
         "type": "Sport",
@@ -70,11 +73,14 @@
         ]
     },
     {
+        "city": 1,
         "name": "B&B HOTEL Poznań Old Town",
         "location": "",
         "type": "Hotel",
         "address": "plac Wolnosci 16, Poznan, Poland 61-739",
-        "tags": ["Relaxation"],
+        "tags": [
+            "Relaxation"
+        ],
         "score": 3,
         "disableAccessibility": true,
         "estimatedDuration": 0,
@@ -91,6 +97,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Sheraton Poznan Hotel",
         "location": "",
         "type": "Hotel",
@@ -114,6 +121,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Apartamenty Wodna 13",
         "location": "",
         "type": "Hotel",
@@ -137,6 +145,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Meet Poznań Hotel",
         "location": "",
         "type": "Hotel",
@@ -160,6 +169,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Don Prestige Residence",
         "location": "",
         "type": "Hotel",
@@ -183,6 +193,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "The National Museum in Poznań",
         "location": "",
         "type": "Museum",
@@ -206,6 +217,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Museum of the Wielkopolska Uprising 1918–1919",
         "location": "",
         "type": "Museum",
@@ -229,6 +241,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Archaeological Museum",
         "location": "",
         "type": "Museum",
@@ -253,6 +266,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Museum of Applied Arts",
         "location": "",
         "type": "Museum",
@@ -277,6 +291,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Museum of Armored Weapons",
         "location": "",
         "type": "Museum",
@@ -300,6 +315,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Park Cytadela",
         "location": "",
         "type": "Parcs",
@@ -323,6 +339,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Parc Sołacki",
         "location": "",
         "type": "Parcs",
@@ -346,6 +363,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Woodrow Wilson Park",
         "location": "",
         "type": "Parcs",
@@ -369,6 +387,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Adam Mickiewicz Park",
         "location": "",
         "type": "Parcs",
@@ -392,6 +411,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Parc Rataje",
         "location": "",
         "type": "Parcs",
@@ -415,6 +435,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Posnania",
         "location": "",
         "type": "Mall",
@@ -439,6 +460,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Stary Browar",
         "location": "",
         "type": "Mall",
@@ -463,6 +485,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Avenida Poznań",
         "location": "",
         "type": "Mall",
@@ -487,6 +510,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Poznań Plaza",
         "location": "",
         "type": "Mall",
@@ -510,11 +534,14 @@
         ]
     },
     {
+        "city": 1,
         "name": "Kupiec Poznański",
         "location": "",
         "type": "Mall",
         "address": "plac Wiosny Ludów 2, 61-831 Poznań, Pologne",
-        "tags": ["Shopping"],
+        "tags": [
+            "Shopping"
+        ],
         "score": 2,
         "disableAccessibility": false,
         "estimatedDuration": 1,
@@ -530,8 +557,8 @@
             }
         ]
     },
-    
     {
+        "city": 1,
         "name": "Figa",
         "location": "",
         "type": "Restaurents",
@@ -555,6 +582,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Restauracja Pod Nosem",
         "location": "",
         "type": "Restaurents",
@@ -578,6 +606,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Pyra Bar",
         "location": "",
         "type": "Restaurents",
@@ -601,6 +630,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "FORZA - kuchnia włoska",
         "location": "",
         "type": "Restaurents",
@@ -624,6 +654,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Weranda Take Away & Bistro",
         "location": "",
         "type": "Restaurents",
@@ -647,6 +678,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Matii Sushi",
         "location": "",
         "type": "Restaurents",
@@ -670,6 +702,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Yeżyce Kuchnia",
         "location": "",
         "type": "Restaurents",
@@ -693,6 +726,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Whiskey in the Jar",
         "location": "",
         "type": "Restaurents",
@@ -716,6 +750,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Happy Little Truck",
         "location": "",
         "type": "Restaurents",
@@ -739,6 +774,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Kayaking on the Warta River",
         "location": "",
         "type": "Sport",
@@ -762,6 +798,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Groto",
         "location": "",
         "type": "Sport",
@@ -785,6 +822,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Termy Maltańskie",
         "location": "",
         "type": "Sport",
@@ -808,6 +846,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "KT Park Tenisowy",
         "location": "",
         "type": "Sport",
@@ -831,6 +870,7 @@
         ]
     },
     {
+        "city": 1,
         "name": "Binowo Park Golf",
         "location": "",
         "type": "Sport",
