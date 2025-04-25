@@ -1,0 +1,27 @@
+meta {
+  name: mistral
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://api.mistral.ai/v1/chat/completions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: c1Qev4KKM1epd7b2k2woyTMSS7wFBAEz
+}
+
+body:json {
+  {
+    "model":"mistral-small-latest",
+    "messages":[
+      {
+        "role": "user",
+        "content":"create a trip in poznan between the 10 of may and the 26 of mai 2025. this should include hotel and restauration. activities type : sports, excalade, musuem art, opera. this should be in formated yaml file explaining each day trip"
+      }
+    ]
+  }
+}
