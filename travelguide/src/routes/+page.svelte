@@ -33,17 +33,17 @@
 		markers = [];
 	}
 
-	async function generateGuide(interests, budget, start, end) {
+	async function generateGuide(cityId, city, interests, budget, currency, startDate, endDate) {
 		emptyMarkers();
 
-		const res = await fetch('/api/guide', {
+		const res = await fetch('/api/guideai', {
 			method: 'POST',
-			body: JSON.stringify({ interests, budget, start, end })
+			body: JSON.stringify({ cityId, city, interests, budget, currency, startDate, endDate })
 		});
 
 		submitted = true;
 		const data = await res.json();
-		selectedPlaces.places = data.itinerary.map((el) => el.place);
+		selectedPlaces.places = data.locations;
 		updateList();
 	}
 
@@ -88,7 +88,7 @@
 		</button>
 	</header>
 	{#if !collapsed}
-		<div class="max-h-[calc(100dvh-144px)] overflow-auto border-t-1 border-gray-200">
+		<div class="border-t-1 max-h-[calc(100dvh-144px)] overflow-auto border-gray-200">
 			{#if submitted}
 				<div class="mt-4 flex flex-col gap-2">
 					{#each selectedPlaces.places as place}
