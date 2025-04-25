@@ -13,6 +13,7 @@
 	function close() {
 		expanded = false;
 	}
+	
 </script>
 
 <div class="flex flex-col gap-4 rounded-lg border border-gray-300 p-4">

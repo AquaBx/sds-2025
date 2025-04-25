@@ -1,14 +1,17 @@
 import { json } from '@sveltejs/kit';
-import data from '$lib/data.json';
-import type { Place } from '$lib/types';
 import type { RequestHandler } from './$types';
+import prisma from '$lib/prisma';
+import type { Activity } from '@prisma/client';
 
 function timeToMinutes(time: string): number {
+  if (time == null) { return 0 }
   const [hours, minutes] = time.split(':').map(Number);
   return hours * 60 + minutes;
 }
 
-function isOpenDuring(visitStart: number, visitEnd: number, place: Place) {
+function isOpenDuring(visitStart: number, visitEnd: number, place: Activity) {
+  if (place.openingTime === null || place.closingTime === null) return true
+
   const open = timeToMinutes(place.openingTime);
   const close = timeToMinutes(place.closingTime);
   return open <= visitStart && visitEnd <= close;
@@ -23,16 +26,25 @@ export const POST: RequestHandler = async ({ request }) => {
 
   let remainingBudget = budget;
   let currentTime = startMinutes;
-  const guide: { place: Place; from: string; to: string }[] = [];
+  const guide: { place: Activity; from: string; to: string }[] = [];
 
-  const candidates = (data as Place[])
-    .filter(place =>
-      place.tags?.some(tag => interests.includes(tag)) &&
-      place.price <= remainingBudget &&
-      place.estimatedDuration * 60 <= (endMinutes - currentTime) &&
-      isOpenDuring(currentTime, currentTime + place.estimatedDuration * 60, place)
-    )
-    .sort((a, b) => b.score - a.score);
+  const candidates = await prisma.activity.findMany({
+    where: {
+      tags: {
+        some: {
+          name: {
+            in: interests,
+          },
+        },
+      }
+    },
+    orderBy: {
+      score: 'desc',
+    },
+    include: {
+      picture: true,
+    },
+  });
 
   for (const place of candidates) {
     const duration = place.estimatedDuration * 60;

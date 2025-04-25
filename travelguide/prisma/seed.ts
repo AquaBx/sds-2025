@@ -1,36 +1,54 @@
 //prisma/seed.ts
 
 import { PrismaClient } from '@prisma/client';
-import userData from '../src/lib/data.json' assert { type: 'json' };
+import activities from './data/activities.json' assert { type: 'json' };
+import cities from './data/cities.json' assert { type: 'json' };
 
 const prisma = new PrismaClient();
 
 async function main() {
 	console.log(`Start seeding ...`);
 
-	for (const p of userData) {
-		const user = await prisma.activity.create({
+	for (const c of cities) {
+		const c2 = await prisma.city.create({
+			data: { name: c.name, zipcode: c.zip, country: c.country }
+		})
+	}
+
+	for (const p of activities) {
+		const activity = await prisma.activity.create({
 			data: {
-                name : p.name,
-                location : p.location,
-                score : p.score,
-				type : p.type,
-				address : p.address,
-				tags: {
-					create: p.tags.map((t: string) => ({ name: t }))
+				name: p.name,
+				location: p.location,
+				score: p.score,
+				type: {
+					connectOrCreate: {
+						where: { name: p.type },
+						create: { name: p.type }
+					}
 				},
-				disableAccessibility : p.disableAccessibility,
-				estimatedDuration : p.estimatedDuration,
-				price : p.price,
-				currency : p.currency,
-				theme : p.theme,
-				description : p.description,
-				picture : {
+				address: p.address,
+				tags: {
+					connectOrCreate: p.tags.map((t: string) => ({
+						where: { name: t },
+						create: { name: t }
+					}))
+				},
+				city: {
+					connect: { id: p.city },
+				},
+				disableAccessibility: p.disableAccessibility,
+				estimatedDuration: p.estimatedDuration,
+				price: p.price,
+				currency: p.currency,
+				theme: p.theme,
+				description: p.description,
+				picture: {
 					create: p.picture
 				},
 			}
 		});
-		console.log(`Created user with id: ${user.id}`);
+		console.log(`Created user with id: ${activity.id}`);
 	}
 	console.log(`Seeding finished.`);
 }
