@@ -318,7 +318,7 @@
         "city": 1,
         "name": "Park Cytadela",
         "location": "",
-        "type": "Parcs",
+        "type": "Park",
         "address": "aleja Armii Poznań, 61-001 Poznań, Pologne",
         "tags": [
             "Nature"
@@ -342,7 +342,7 @@
         "city": 1,
         "name": "Parc Sołacki",
         "location": "",
-        "type": "Parcs",
+        "type": "Park",
         "address": "60-619 Poznań, Pologne",
         "tags": [
             "Nature"
@@ -358,7 +358,7 @@
         "description": "A beautiful park in the Sołacz district, designed in the English style. It features ponds, footbridges, and a restaurant in a manor house.",
         "picture": [
             {
-                "url": "/images/parcsolacki-poznan/image.png"
+                "url": "/images/Parkolacki-poznan/image.png"
             }
         ]
     },
@@ -366,7 +366,7 @@
         "city": 1,
         "name": "Woodrow Wilson Park",
         "location": "",
-        "type": "Parcs",
+        "type": "Park",
         "address": "Śniadeckich 30, 61-001 Poznań, Pologne",
         "tags": [
             "Nature"
@@ -390,7 +390,7 @@
         "city": 1,
         "name": "Adam Mickiewicz Park",
         "location": "",
-        "type": "Parcs",
+        "type": "Park",
         "address": "7, 60-101 Poznań, Pologne",
         "tags": [
             "Nature"
@@ -414,7 +414,7 @@
         "city": 1,
         "name": "Parc Rataje",
         "location": "",
-        "type": "Parcs",
+        "type": "Park",
         "address": "61-253 Poznań, Pologne",
         "tags": [
             "Nature"
