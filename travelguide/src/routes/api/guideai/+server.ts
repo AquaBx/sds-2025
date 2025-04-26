@@ -1,15 +1,13 @@
 import prisma from '$lib/prisma';
 import { Mistral } from '@mistralai/mistralai';
-import type { Messages, SystemMessage, ToolMessage, UserMessage } from '@mistralai/mistralai/models/components';
+import type { Messages, ToolMessage } from '@mistralai/mistralai/models/components';
 import { json, type RequestHandler } from '@sveltejs/kit';
 
-const apiKey = process.env.MISTRAL_API;
+const apiKey = import.meta.env.VITE_MISTRAL_API;
 const model = "ministral-3b-latest";
 // const model = "mistral-small-latest";
 
 const client = new Mistral({ apiKey: apiKey });
-
-
 
 const tools = [
     {
@@ -124,5 +122,5 @@ export const POST: RequestHandler = async ({ request }) => {
         }
     })
 
-    return json({ itinerary:itinerary, locations });
+    return json({ itinerary: itinerary, locations });
 }
