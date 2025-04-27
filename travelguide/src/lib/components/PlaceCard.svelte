@@ -14,6 +14,7 @@
 		expanded = false;
 	}
 	
+	console.log(place);
 </script>
 
 <div class="flex flex-col gap-4 rounded-lg border border-gray-300 p-4">
@@ -42,6 +43,7 @@
 			</div>
 		</div>
 		<div class="text-sm leading-relaxed text-gray-800">{place.description}</div>
+		<div>Open at : {place.openingTime}</div>
 	</div>
 </div>
 
