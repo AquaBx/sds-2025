@@ -7,6 +7,7 @@
 	import Form from '$lib/components/Form.svelte';
 	import PlaceCard from '$lib/components/PlaceCard.svelte';
 	import type { Place } from '$lib/types';
+	import Filters from '$lib/components/Filters.svelte';
 
 	let mapDiv: HTMLDivElement;
 	let map: maplibre.Map;
@@ -78,6 +79,19 @@
 		selectedPlaces.places = data.places;
 		updateList();
 	}
+
+	async function applyFilters(maxPrice) {
+		selectedPlaces.places = selectedPlaces.places.filter((place) => {
+            const matchesPrice = maxPrice === null || place.price <= maxPrice;
+            return matchesPrice;
+        });
+        updateList();
+	}
+
+	function resetFilters() {
+		emptyMarkers();
+		showAll();
+	}
 </script>
 
 <navbar class="absolute left-0 top-0 z-10 m-8 w-96 rounded-2xl bg-white/90 p-6">
@@ -96,6 +110,7 @@
 					{/each}
 				</div>
 				<button class="button mt-4 w-full" onclick={() => cancel()}> Cancel </button>
+				<Filters {applyFilters} {resetFilters} />
 			{:else}
 				<Form {generateGuide} {showAll}></Form>
 			{/if}

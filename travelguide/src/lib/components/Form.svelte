@@ -6,16 +6,7 @@
 	let start = $state('09:00');
 	let end = $state('17:00');
 	const categories = ['Nature', 'History', 'Art', 'Food', 'Sport', 'Shopping', 'Relaxation'];
-
-	let step = $state(0);
 </script>
-
-<!-- <form>
-	{#if step !== 0}
-		<button>Previous</button>
-	{/if}
-	<button>Next</button>
-</form> -->
 
 <form
 	onsubmit={(e) => {
