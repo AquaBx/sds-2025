@@ -257,7 +257,7 @@
         "closingTime": "16:00",
         "price": 0,
         "currency": "PLN",
-        "theme": "Archéologie",
+        "theme": "Archeology",
         "description": "Museum of archeology with ancient Egyptian exhibits, housed in palace dating from the 16th century.",
         "picture": [
             {
@@ -282,7 +282,7 @@
         "closingTime": "16:00",
         "price": 20,
         "currency": "PLN",
-        "theme": "applied art",
+        "theme": "Art",
         "description": "The museum collects objects of applied art from the Middle Ages to the present.",
         "picture": [
             {
@@ -306,7 +306,7 @@
         "closingTime": "16:00",
         "price": 20,
         "currency": "PLN",
-        "theme": "tanks",
+        "theme": "Military",
         "description": "Collection of armored military vehicles & weaponry used in various 20th-century conflicts.",
         "picture": [
             {
@@ -633,7 +633,7 @@
         "city": 1,
         "name": "FORZA - kuchnia włoska",
         "location": "",
-        "type": "Restaurents",
+        "type": "Restaurants",
         "address": "Stary Rynek 85, 61-772 Poznań, Pologne",
         "tags": [
             "Food"
@@ -645,7 +645,7 @@
         "closingTime": "23:00",
         "price": 0,
         "currency": "PLN",
-        "theme": "Italian",
+        "theme": "Restaurant",
         "description": "Authentic Italian cuisine served in a vibrant setting on the Old Market Square. Offers a variety of classic pasta, pizza, and other Italian specialties.",
         "picture": [
             {
@@ -669,7 +669,7 @@
         "closingTime": "22:00",
         "price": 0,
         "currency": "PLN",
-        "theme": "Eating",
+        "theme": "Restaurant",
         "description": "A charming bistro offering a mix of international dishes, known for its fresh ingredients and cozy atmosphere. Also offers takeaway options.",
         "picture": [
             {
@@ -693,7 +693,7 @@
         "closingTime": "22:00",
         "price": 0,
         "currency": "PLN",
-        "theme": "Eating",
+        "theme": "Restaurant",
         "description": "Popular sushi restaurant known for its fresh and high-quality sushi and other Japanese dishes. Offers a modern and stylish dining space.",
         "picture": [
             {
@@ -705,7 +705,7 @@
         "city": 1,
         "name": "Yeżyce Kuchnia",
         "location": "",
-        "type": "Restaurents",
+        "type": "Restaurants",
         "address": "Dąbrowskiego 25, 60-572 Poznań, Pologne",
         "tags": [
             "Food"
@@ -717,7 +717,7 @@
         "closingTime": "22:00",
         "price": 0,
         "currency": "PLN",
-        "theme": "Confort Food",
+        "theme": "Typical Food",
         "description": "Restaurant focusing on traditional Polish comfort food with a home-style feel. Located in the charming Jeżyce district.",
         "picture": [
             {
@@ -741,7 +741,7 @@
         "closingTime": "22:00",
         "price": 0,
         "currency": "PLN",
-        "theme": "Américain",
+        "theme": "Americain",
         "description": "American-style steakhouse known for its juicy steaks, burgers, and lively atmosphere. Often features live music.",
         "picture": [
             {
@@ -789,7 +789,7 @@
         "closingTime": "",
         "price": 40,
         "currency": "PLN",
-        "theme": "water",
+        "theme": "Water",
         "description": "Enjoy a leisurely paddle on the Warta River, offering scenic views of the city, or explore the waters of Lake Malta, a popular recreational spot.",
         "picture": [
             {
@@ -837,7 +837,7 @@
         "closingTime": "",
         "price": 40,
         "currency": "PLN",
-        "theme": "Swimming",
+        "theme": "Water",
         "description": "Large pool to go relax and do  some sports in poznan",
         "picture": [
             {

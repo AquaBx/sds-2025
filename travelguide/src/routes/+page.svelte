@@ -80,10 +80,13 @@
 		updateList();
 	}
 
-	async function applyFilters(maxPrice) {
+	async function applyFilters(maxPrice, selectedThemes) {
+		emptyMarkers();
 		selectedPlaces.places = selectedPlaces.places.filter((place) => {
             const matchesPrice = maxPrice === null || place.price <= maxPrice;
-            return matchesPrice;
+            const matchesTheme =
+                selectedThemes.length === 0 || selectedThemes.includes(place.theme);
+            return matchesPrice && matchesTheme;
         });
         updateList();
 	}
