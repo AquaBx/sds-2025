@@ -1,4 +1,5 @@
 <script lang="ts">
+  
 	import maplibre from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { onMount } from 'svelte';
@@ -6,6 +7,7 @@
 	import { ChevronDown, ChevronUp } from '@steeze-ui/heroicons';
 	import Form from '$lib/components/Form.svelte';
 	import PlaceCard from '$lib/components/PlaceCard.svelte';
+	import SearchBar from '$lib/components/SearchBar.svelte';
 	import type { Place } from '$lib/types';
 
 	let mapDiv: HTMLDivElement;
@@ -78,6 +80,14 @@
 		selectedPlaces.places = data.places;
 		updateList();
 	}
+
+	async function searchByName(name: string) {
+		emptyMarkers();
+		const res = await fetch('/api/places');
+		const data = await res.json();
+		selectedPlaces.places = data.places.filter((place) => place.name.toLowerCase().includes(name.toLowerCase()));
+		updateList();
+	}
 </script>
 
 <navbar class="absolute left-0 top-0 z-10 m-8 w-96 rounded-2xl bg-white/90 p-6">
@@ -90,6 +100,7 @@
 	{#if !collapsed}
 		<div class="max-h-[calc(100dvh-144px)] overflow-auto border-t-1 border-gray-200">
 			{#if submitted}
+				<SearchBar {searchByName}></SearchBar>
 				<div class="mt-4 flex flex-col gap-2">
 					{#each selectedPlaces.places as place}
 						<PlaceCard {place} />
