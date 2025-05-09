@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 async function main() {
 	console.log(`Start seeding ...`);
-
+	
 	for (const c of cities) {
 		const c2 = await prisma.city.create({
 			data: { name: c.name, zipcode: c.zip, country: c.country }
