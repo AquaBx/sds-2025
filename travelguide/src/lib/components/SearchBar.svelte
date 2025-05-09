@@ -1,5 +1,5 @@
 <script lang="ts">
-	let { searchByName } = $props();
+	let { searchPlaces } = $props();
 	let value: string = $state('');
 	
 	import type { Place } from '$lib/types';
@@ -11,12 +11,11 @@
 	
 	<input
 		type="text"
-		placeholder="Search for a place (name, theme, etc.)"
+		placeholder="Search for a place (name, theme, etc...)"
 		class="input w-full" bind:value={value}
 		oninput={(e) => {
 			e.preventDefault();
-			searchByName(value);
-			
+			searchPlaces(value);
 		}}
 		
 		/>

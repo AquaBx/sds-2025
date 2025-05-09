@@ -81,13 +81,18 @@
 		updateList();
 	}
 
-	async function searchByName(name: string) {
+	
+
+	async function searchPlaces(query: string) {
 		emptyMarkers();
 		const res = await fetch('/api/places');
 		const data = await res.json();
-		selectedPlaces.places = data.places.filter((place) => place.name.toLowerCase().includes(name.toLowerCase()));
+		const q = query.toLowerCase();
+		selectedPlaces.places = data.places.filter((place) => place.name.toLowerCase().includes(q) || place.theme.toLowerCase().includes(q));
 		updateList();
 	}
+
+
 </script>
 
 <navbar class="absolute left-0 top-0 z-10 m-8 w-96 rounded-2xl bg-white/90 p-6">
@@ -100,7 +105,7 @@
 	{#if !collapsed}
 		<div class="max-h-[calc(100dvh-144px)] overflow-auto border-t-1 border-gray-200">
 			{#if submitted}
-				<SearchBar {searchByName}></SearchBar>
+				<SearchBar {searchPlaces}></SearchBar>
 				<div class="mt-4 flex flex-col gap-2">
 					{#each selectedPlaces.places as place}
 						<PlaceCard {place} />
