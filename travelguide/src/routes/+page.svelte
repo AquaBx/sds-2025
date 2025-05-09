@@ -88,7 +88,7 @@
 		const res = await fetch('/api/places');
 		const data = await res.json();
 		const q = query.toLowerCase();
-		selectedPlaces.places = data.places.filter((place) => place.name.toLowerCase().includes(q) || place.theme.toLowerCase().includes(q));
+		selectedPlaces.places = data.places.filter((place) => place.name.toLowerCase().includes(q) || place.theme.toLowerCase().includes(q)|| place.typeName.toLowerCase().includes(q));
 		updateList();
 	}
 
