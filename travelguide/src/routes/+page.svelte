@@ -1,5 +1,4 @@
 <script lang="ts">
-  
 	import maplibre from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { onMount } from 'svelte';
@@ -16,11 +15,8 @@
 	let collapsed = $state(false);
 	let submitted = $state(false);
 	let markers: maplibre.Marker[] = [];
-	let selectedPlaces: { places: Place[] } = $state({
-		places: []
-	});
-
-	let old :  Place[]
+	let selectedPlaces: Place[] = $state([]);
+	let selectedPlacesCopy: Place[];
 
 	onMount(() => {
 		map = new maplibre.Map({
@@ -39,14 +35,14 @@
 	}
 
 	async function generateGuide(
-		cityId,
-		city,
-		interests,
-		budget,
-		currency,
-		startDate,
-		endDate,
-		disability
+		cityId: number,
+		city: string,
+		interests: string[],
+		budget: number,
+		currency: string,
+		startDate: string,
+		endDate: string,
+		disability: boolean
 	) {
 		emptyMarkers();
 
@@ -66,22 +62,21 @@
 
 		submitted = true;
 		const data = await res.json();
-		selectedPlaces.places = data.itinerary
+		selectedPlaces = data.itinerary;
+		selectedPlacesCopy = data.itinerary;
 		updateList();
 	}
 
 	function cancel() {
 		submitted = false;
 		emptyMarkers();
-		for (let p in selectedPlaces.places) {
-			delete selectedPlaces.places[p];
+		for (let p in selectedPlaces) {
+			delete selectedPlaces[p];
 		}
 	}
 
 	function updateList() {
-		console.log(selectedPlaces);
-
-		for (let location of selectedPlaces.places) {
+		for (let location of selectedPlaces) {
 			const marker = new maplibre.Marker();
 			let coords = location.location.split(';');
 			coords.reverse();
@@ -89,7 +84,6 @@
 			markers.push(marker);
 			marker.addTo(map);
 		}
-		console.log(selectedPlaces);
 	}
 
 	async function showAll() {
@@ -98,38 +92,37 @@
 		submitted = true;
 		const res = await fetch('/api/places');
 		const data = await res.json();
-		selectedPlaces.places = data.places;
+		selectedPlaces = data.places;
+		selectedPlacesCopy = data.places;
 		updateList();
 	}
 
-	async function applyFilters(maxPrice, selectedThemes) {
+	function applyFilters(maxPrice: number, selectedThemes: string[]) {
 		emptyMarkers();
-		old = selectedPlaces.places
-		selectedPlaces.places = old.filter((place) => {
-            const matchesPrice = maxPrice === null || place.price <= maxPrice;
-            const matchesTheme =
-                selectedThemes.length === 0 || selectedThemes.includes(place.theme);
-            return matchesPrice && matchesTheme;
-        });
-        updateList();
+		selectedPlaces = selectedPlacesCopy.filter((place) => {
+			const matchesPrice = maxPrice === null || place.price <= maxPrice;
+			const matchesTheme = selectedThemes.length === 0 || selectedThemes.includes(place.theme);
+			return matchesPrice && matchesTheme;
+		});
+		updateList();
 	}
 
 	function resetFilters() {
 		emptyMarkers();
 		showAll();
 	}
-	
 
 	async function searchPlaces(query: string) {
 		emptyMarkers();
-		const res = await fetch('/api/places');
-		const data = await res.json();
 		const q = query.toLowerCase();
-		selectedPlaces.places = data.places.filter((place) => place.name.toLowerCase().includes(q) || place.theme.toLowerCase().includes(q)|| place.typeName.toLowerCase().includes(q));
+		selectedPlaces = selectedPlacesCopy.filter(
+			(place) =>
+				place.name.toLowerCase().includes(q) ||
+				place.theme.toLowerCase().includes(q) ||
+				place.typeName.toLowerCase().includes(q)
+		);
 		updateList();
 	}
-
-
 </script>
 
 <navbar class="absolute left-0 top-0 z-10 m-8 w-96 rounded-2xl bg-white/90 p-6">
@@ -144,7 +137,7 @@
 			{#if submitted}
 				<SearchBar {searchPlaces}></SearchBar>
 				<div class="mt-4 flex flex-col gap-2">
-					{#each selectedPlaces.places as place}
+					{#each selectedPlaces as place}
 						<PlaceCard {place} />
 					{/each}
 				</div>
