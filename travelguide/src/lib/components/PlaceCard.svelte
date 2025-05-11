@@ -42,6 +42,7 @@
 			</div>
 		</div>
 		<div class="text-sm leading-relaxed text-gray-800">{place.description}</div>
+		<div>Open at : {place.openingTime}</div>
 	</div>
 </div>
 
