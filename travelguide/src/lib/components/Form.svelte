@@ -54,7 +54,13 @@
 
 	<label>
 		Currency:
-		<input class="input" type="text" bind:value={currency} />
+		<input
+			class="input"
+			type="text"
+			bind:value={currency}
+			pattern="[A-Z]{3}"
+			title="ISO-4217 code, e.g. EUR"
+		/>
 	</label>
 
 	<label>

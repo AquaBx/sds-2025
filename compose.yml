@@ -43,7 +43,7 @@ services:
           path: ./travelguide
           ignore:
             - node_modules/
-            - .svele-kit/
+            - .svelte-kit/
     depends_on:
       db:
         condition: service_healthy
