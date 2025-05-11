@@ -39,6 +39,8 @@ async function main() {
 				},
 				disableAccessibility: p.disableAccessibility,
 				estimatedDuration: p.estimatedDuration,
+				openingTime: p.openingTime,
+				closingTime: p.closingTime,
 				price: p.price,
 				currency: p.currency,
 				theme: p.theme,
