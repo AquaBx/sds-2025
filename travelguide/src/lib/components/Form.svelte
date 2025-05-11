@@ -7,13 +7,14 @@
 	let currency = $state("EUR");
 	let start = $state('2025-04-25');
 	let end = $state('2025-04-25');
+	let disability = $state(false);
 	const categories = ['Nature', 'History', 'Art', 'Food', 'Sport', 'Shopping', 'Relaxation'];
 </script>
 
 <form
 	onsubmit={(e) => {
 		e.preventDefault();
-		generateGuide(destination.cityId,destination.city,interests, budget, start, end);
+		generateGuide(destination.cityId,destination.city,interests, budget, currency,start, end);
 	}}
 	class="mt-4 flex flex-col gap-4"
 >
@@ -54,6 +55,11 @@
 	<label>
 		End time:
 		<input class="input" type="date" bind:value={end} />
+	</label>
+
+	<label>
+		Disability Accessible
+		<input type="checkbox" bind:checked={disability} />
 	</label>
 
 	<div class="flex flex-col gap-1">

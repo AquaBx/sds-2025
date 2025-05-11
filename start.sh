@@ -1,4 +1,6 @@
-cd travelguide
+npm install
+npx prisma migrade reset --force
 npx prisma migrate dev --name init
 npx prisma db push
-npm run dev;
+npx prisma db seed
+node dist
