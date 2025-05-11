@@ -20,6 +20,8 @@
 		places: []
 	});
 
+	let old :  Place[]
+
 	onMount(() => {
 		map = new maplibre.Map({
 			container: mapDiv, // container id
@@ -102,7 +104,8 @@
 
 	async function applyFilters(maxPrice, selectedThemes) {
 		emptyMarkers();
-		selectedPlaces.places = selectedPlaces.places.filter((place) => {
+		old = selectedPlaces.places
+		selectedPlaces.places = old.filter((place) => {
             const matchesPrice = maxPrice === null || place.price <= maxPrice;
             const matchesTheme =
                 selectedThemes.length === 0 || selectedThemes.includes(place.theme);
