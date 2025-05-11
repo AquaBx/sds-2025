@@ -18,7 +18,7 @@ function isOpenDuring(visitStart: number, visitEnd: number, place: Activity) {
 }
 
 export const POST: RequestHandler = async ({ request }) => {
-  const { interests, budget, start, end } = await request.json();
+  const { interests, budget, start, end, disability } = await request.json();
 
   const startMinutes = timeToMinutes(start);
   const endMinutes = timeToMinutes(end);
@@ -36,7 +36,8 @@ export const POST: RequestHandler = async ({ request }) => {
             in: interests,
           },
         },
-      }
+      },
+      ...(disability ? { disableAccessibility: true } : {})
     },
     orderBy: {
       score: 'desc',

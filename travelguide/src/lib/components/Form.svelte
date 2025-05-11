@@ -5,6 +5,7 @@
 	let budget = $state(50);
 	let start = $state('09:00');
 	let end = $state('17:00');
+	let disability = $state(false);
 	const categories = ['Nature', 'History', 'Art', 'Food', 'Sport', 'Shopping', 'Relaxation'];
 
 	let step = $state(0);
@@ -20,7 +21,7 @@
 <form
 	onsubmit={(e) => {
 		e.preventDefault();
-		generateGuide(interests, budget, start, end);
+		generateGuide(interests, budget, start, end, disability);
 	}}
 	class="mt-4 flex flex-col gap-4"
 >
@@ -54,6 +55,11 @@
 	<label>
 		End time:
 		<input class="input" type="time" bind:value={end} />
+	</label>
+
+	<label>
+		Disability Accessible
+		<input type="checkbox" bind:checked={disability} />
 	</label>
 
 	<div class="flex flex-col gap-1">
