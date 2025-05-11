@@ -4,23 +4,22 @@
 	let { applyFilters, resetFilters } = $props();
 	let maxPrice = $state(50);
 	let selectedthemes = $state([]);
-	const themes = [
-		'Botanic Garden',
-		'ZOO',
-		'Football Stadium',
-		'Art',
-		'Military',
-		'Archeology',
-		'Nature',
-		'Shopping',
-		'Restaurant',
-		'Typical Food',
-		'Americain',
-		'Burger',
-		'Water',
-		'Indoor Climbing',
-		'Water'
-	];
+const themes = [
+	'Botanic Garden',
+	'ZOO',
+	'Football Stadium',
+	'Art',
+	'Military',
+	'Archeology',
+	'Nature',
+	'Shopping',
+	'Restaurant',
+	'Typical Food',
+	'Americain',
+	'Burger',
+	'Water',
+	'Indoor Climbing'
+];
 </script>
 
 <div
