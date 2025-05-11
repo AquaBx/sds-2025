@@ -28,12 +28,22 @@ services:
       retries: 5
 
   server:
+    env_file:
+      - .env
     build:
       context: ./
     environment:
-      NODE_ENV: production
+      MISTRAL_API_KEY: "${MISTRAL_API_KEY}"
+      DATABASE_URL: "postgresql://${username}:${password}@db:5432/${database}?schema=public"
     ports:
-      - 4173:4173
+      - 3000:3000
+    develop:
+      watch:
+        - action: rebuild
+          path: ./travelguide
+          ignore:
+            - node_modules/
+            - .svelte-kit/
     depends_on:
       db:
         condition: service_healthy

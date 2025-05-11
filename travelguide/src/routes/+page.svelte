@@ -6,16 +6,17 @@
 	import { ChevronDown, ChevronUp } from '@steeze-ui/heroicons';
 	import Form from '$lib/components/Form.svelte';
 	import PlaceCard from '$lib/components/PlaceCard.svelte';
+	import SearchBar from '$lib/components/SearchBar.svelte';
 	import type { Place } from '$lib/types';
+	import Filters from '$lib/components/Filters.svelte';
 
 	let mapDiv: HTMLDivElement;
 	let map: maplibre.Map;
 	let collapsed = $state(false);
 	let submitted = $state(false);
 	let markers: maplibre.Marker[] = [];
-	let selectedPlaces: { places: Place[] } = $state({
-		places: []
-	});
+	let selectedPlaces: Place[] = $state([]);
+	let selectedPlacesCopy: Place[];
 
 	onMount(() => {
 		map = new maplibre.Map({
@@ -33,32 +34,49 @@
 		markers = [];
 	}
 
-	async function generateGuide(interests, budget, start, end) {
+	async function generateGuide(
+		cityId: number,
+		city: string,
+		interests: string[],
+		budget: number,
+		currency: string,
+		startDate: string,
+		endDate: string,
+		disability: boolean
+	) {
 		emptyMarkers();
 
 		const res = await fetch('/api/guide', {
 			method: 'POST',
-			body: JSON.stringify({ interests, budget, start, end })
+			body: JSON.stringify({
+				cityId,
+				city,
+				interests,
+				budget,
+				currency,
+				startDate,
+				endDate,
+				disability
+			})
 		});
 
 		submitted = true;
 		const data = await res.json();
-		selectedPlaces.places = data.itinerary.map((el) => el.place);
+		selectedPlaces = data.itinerary;
+		selectedPlacesCopy = data.itinerary;
 		updateList();
 	}
 
 	function cancel() {
 		submitted = false;
 		emptyMarkers();
-		for (let p in selectedPlaces.places) {
-			delete selectedPlaces.places[p];
+		for (let p in selectedPlaces) {
+			delete selectedPlaces[p];
 		}
 	}
 
 	function updateList() {
-		console.log(selectedPlaces);
-
-		for (let location of selectedPlaces.places) {
+		for (let location of selectedPlaces) {
 			const marker = new maplibre.Marker();
 			let coords = location.location.split(';');
 			coords.reverse();
@@ -66,7 +84,6 @@
 			markers.push(marker);
 			marker.addTo(map);
 		}
-		console.log(selectedPlaces);
 	}
 
 	async function showAll() {
@@ -75,7 +92,35 @@
 		submitted = true;
 		const res = await fetch('/api/places');
 		const data = await res.json();
-		selectedPlaces.places = data.places;
+		selectedPlaces = data.places;
+		selectedPlacesCopy = data.places;
+		updateList();
+	}
+
+	function applyFilters(maxPrice: number, selectedThemes: string[]) {
+		emptyMarkers();
+		selectedPlaces = selectedPlacesCopy.filter((place) => {
+			const matchesPrice = maxPrice === null || place.price <= maxPrice;
+			const matchesTheme = selectedThemes.length === 0 || selectedThemes.includes(place.theme);
+			return matchesPrice && matchesTheme;
+		});
+		updateList();
+	}
+
+	function resetFilters() {
+		emptyMarkers();
+		showAll();
+	}
+
+	async function searchPlaces(query: string) {
+		emptyMarkers();
+		const q = query.toLowerCase();
+		selectedPlaces = selectedPlacesCopy.filter(
+			(place) =>
+				place.name.toLowerCase().includes(q) ||
+				place.theme.toLowerCase().includes(q) ||
+				place.typeName.toLowerCase().includes(q)
+		);
 		updateList();
 	}
 </script>
@@ -88,14 +133,16 @@
 		</button>
 	</header>
 	{#if !collapsed}
-		<div class="max-h-[calc(100dvh-144px)] overflow-auto border-t-1 border-gray-200">
+		<div class="border-t-1 max-h-[calc(100dvh-144px)] overflow-auto border-gray-200">
 			{#if submitted}
+				<SearchBar {searchPlaces}></SearchBar>
 				<div class="mt-4 flex flex-col gap-2">
-					{#each selectedPlaces.places as place}
+					{#each selectedPlaces as place}
 						<PlaceCard {place} />
 					{/each}
 				</div>
 				<button class="button mt-4 w-full" onclick={() => cancel()}> Cancel </button>
+				<Filters {applyFilters} {resetFilters} />
 			{:else}
 				<Form {generateGuide} {showAll}></Form>
 			{/if}

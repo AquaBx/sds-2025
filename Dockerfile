@@ -1,18 +1,21 @@
-ARG NODE_VERSION=22.14.0
-
-FROM node:${NODE_VERSION}-alpine
+FROM node:24.0-slim AS node
 
 WORKDIR /app
 
-COPY . .
-
-WORKDIR /app/travelguide
-
-EXPOSE 4173
-
+COPY ./travelguide/package*.json ./
 RUN npm install
-RUN npx prisma migrate dev --name init
-RUN npx prisma db push
+
+COPY ./travelguide .
+RUN npx prisma generate
 RUN npm run build
 
-CMD ["npm", "run", "preview"]
+FROM node:24.0-slim AS nodeprod
+WORKDIR /app
+EXPOSE 3000
+COPY ./travelguide/package*.json ./
+COPY ./start.sh ./
+RUN npm install --omit=dev
+COPY ./travelguide/prisma "/app/prisma"
+COPY --from=node /app/build "/app/dist"
+
+CMD ["./start.sh"]
