@@ -47,9 +47,9 @@ const tools = [
   },
 ]
 
-const namesToFunctions : {[k:string]:(arg0: any)=>any} = {
-  'findActivitiesInCity': async ({cityId,interests} : {cityId:number,interests:string[]}) => {
-    return await prisma.activity.findMany({
+const namesToFunctions: { [k: string]: (arg0: any) => any } = {
+  'findActivitiesInCity': async ({ cityId, interests }: { cityId: number, interests: string[] }) => {
+    let req = await prisma.activity.findMany({
       where: {
         cityId: { equals: cityId },
         tags: {
@@ -61,6 +61,7 @@ const namesToFunctions : {[k:string]:(arg0: any)=>any} = {
         }
       }
     })
+    return req
   },
 };
 
@@ -81,12 +82,13 @@ export const POST: RequestHandler = async ({ request }) => {
             the budget is ${budget} ${currency};
             ${disability ? "avoids places that are not accessible for people with reduced mobility" : ""}
             
+            You shall ask the database with the function to gets the activities available.
+
             Each activity must strictly follow this structure:
-            - id: number (id of the activity)
+            - id: number (database id of the activity)
+            - name : string (name of the activity)
             - startingTime: Date (ISO 8601 format)
             - endingTime: Date (ISO 8601 format)
-
-            You shall ask the database with the function to gets the activities available.
 
             Respond ONLY with a valid JSON array. Do not include any explanation or extra text.
         `
@@ -102,17 +104,17 @@ export const POST: RequestHandler = async ({ request }) => {
   });
 
   const msg = (response.choices!)[0].message as (AssistantMessage & { role: "assistant"; })
-  messages.push( msg );
+  messages.push(msg);
   const toolCall = msg.toolCalls![0];
 
   const functionName = toolCall.function.name;
   const functionParams = JSON.parse(toolCall.function.arguments);
-
+  const funcall =  await namesToFunctions[functionName](functionParams)
   messages.push({
     role: "tool",
     name: functionName,
     toolCallId: toolCall.id,
-    content: JSON.stringify(namesToFunctions[functionName](functionParams))
+    content: JSON.stringify(funcall),
   } as ToolMessage & { role: "tool" })
 
 
@@ -127,6 +129,7 @@ export const POST: RequestHandler = async ({ request }) => {
   content = (content as string).replace('```json', '').replace('```', '');
   const itinerary = JSON.parse(content)
   const keys = itinerary.map(e => e.id)
+  console.log(funcall,itinerary, keys)
 
   const locations = await prisma.activity.findMany({
     where: {

@@ -31,7 +31,7 @@
 	<label for="destination">
 		Where do you want to go ?
 		<select class="input" id="destination" bind:value={destination}>
-			<option value={{ cityId: 0, city: 'Poznan' }}>Poznan</option>
+			<option value={{ cityId: 1, city: 'Poznan' }}>Poznan</option>
 		</select>
 	</label>
 
