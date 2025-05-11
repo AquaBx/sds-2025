@@ -1,77 +1,149 @@
-import { json } from '@sveltejs/kit';
-import type { RequestHandler } from './$types';
 import prisma from '$lib/prisma';
-import type { Activity } from '@prisma/client';
+import { Mistral } from '@mistralai/mistralai';
+import type { SystemMessage, ToolMessage, UserMessage, AssistantMessage } from '@mistralai/mistralai/models/components';
+import { json, type RequestHandler } from '@sveltejs/kit';
 
-function timeToMinutes(time: string): number {
-  if (time == null) { return 0 }
-  const [hours, minutes] = time.split(':').map(Number);
-  return hours * 60 + minutes;
-}
+const apiKey = process.env.MISTRAL_API_KEY;
+const model = "ministral-3b-latest";
+// const model = "mistral-small-latest";
 
-function isOpenDuring(visitStart: number, visitEnd: number, place: Activity) {
-  if (place.openingTime === null || place.closingTime === null) return true
+const client = new Mistral({ apiKey: apiKey });
 
-  const open = timeToMinutes(place.openingTime);
-  const close = timeToMinutes(place.closingTime);
-  return open <= visitStart && visitEnd <= close;
-}
+
+type Messages = ((SystemMessage & {
+  role: "system";
+}) | (UserMessage & {
+  role: "user";
+}) | (AssistantMessage & {
+  role: "assistant";
+}) | (ToolMessage & {
+  role: "tool";
+}))[]
+
+const tools = [
+  {
+    type: "function",
+    function: {
+      name: "findActivitiesInCity",
+      description: "Get a list of activities in a given city based on the parameters",
+      parameters: {
+        type: "object",
+        properties: {
+          cityId: {
+            type: "number",
+            description: "the id of the city in the database",
+          },
+          interests: {
+            type: "array",
+            items: {
+              type: "string"
+            },
+            description: "list of interests"
+          }
+        },
+        required: ["cityId"],
+      },
+    },
+  },
+]
+
+const namesToFunctions : {[k:string]:(arg0: any)=>any} = {
+  'findActivitiesInCity': async ({cityId,interests} : {cityId:number,interests:string[]}) => {
+    return await prisma.activity.findMany({
+      where: {
+        cityId: { equals: cityId },
+        tags: {
+          some: {
+            name: {
+              in: interests
+            }
+          }
+        }
+      }
+    })
+  },
+};
 
 export const POST: RequestHandler = async ({ request }) => {
-  const { interests, budget, start, end, disability } = await request.json();
+  const { cityId, city, interests, budget, currency, startDate, endDate, disability } = await request.json();
 
-  const startMinutes = timeToMinutes(start);
-  const endMinutes = timeToMinutes(end);
-  const totalAvailable = endMinutes - startMinutes;
-
-  let remainingBudget = budget;
-  let currentTime = startMinutes;
-  const guide: { place: Activity; from: string; to: string }[] = [];
-
-  const candidates = await prisma.activity.findMany({
-    where: {
-      tags: {
-        some: {
-          name: {
-            in: interests,
-          },
-        },
-      },
-      ...(disability ? { disableAccessibility: true } : {})
+  const messages: Messages = [
+    {
+      role: 'system',
+      content:
+        'You are an assistant that generates realistic JSON data for a travel itinerary planner. Each item should be a detailed activity or place to visit during a trip, formatted strictly according to the required schema.'
     },
-    orderBy: {
-      score: 'desc',
+    {
+      role: 'user',
+      content: `
+            Generate a JSON array for a travel itinerary in ${city} which is identified as id ${cityId}, from ${startDate} to ${endDate}.
+            The activities should match these user preferences: interested in ${interests.join(", ")};
+            the budget is ${budget} ${currency};
+            ${disability ? "avoids places that are not accessible for people with reduced mobility" : ""}
+            
+            Each activity must strictly follow this structure:
+            - id: number (id of the activity)
+            - startingTime: Date (ISO 8601 format)
+            - endingTime: Date (ISO 8601 format)
+
+            You shall ask the database with the function to gets the activities available.
+
+            Respond ONLY with a valid JSON array. Do not include any explanation or extra text.
+        `
+    }
+  ]
+
+  let response = await client.chat.complete({
+    model: model,
+    messages: messages,
+    tools: tools,
+    tool_choice: "any",
+    parallelToolCalls: false,
+  });
+
+  const msg = (response.choices!)[0].message as (AssistantMessage & { role: "assistant"; })
+  messages.push( msg );
+  const toolCall = msg.toolCalls![0];
+
+  const functionName = toolCall.function.name;
+  const functionParams = JSON.parse(toolCall.function.arguments);
+
+  messages.push({
+    role: "tool",
+    name: functionName,
+    toolCallId: toolCall.id,
+    content: JSON.stringify(namesToFunctions[functionName](functionParams))
+  } as ToolMessage & { role: "tool" })
+
+
+  await new Promise(resolve => setTimeout(resolve, 1500));
+
+  response = await client.chat.complete({
+    model: model,
+    messages: messages,
+  });
+
+  let content = (response.choices)![0].message.content!;
+  content = (content as string).replace('```json', '').replace('```', '');
+  const itinerary = JSON.parse(content)
+  const keys = itinerary.map(e => e.id)
+
+  const locations = await prisma.activity.findMany({
+    where: {
+      id: { in: keys }
     },
     include: {
       picture: true,
     },
+  })
+
+  const merged = itinerary.map(it => {
+    const location = locations.find(loc => loc.id === it.id);
+    return {
+      ...it,
+      ...location
+    };
   });
 
-  for (const place of candidates) {
-    const duration = place.estimatedDuration * 60;
-    const visitEnd = currentTime + duration;
-
-    if (
-      visitEnd <= endMinutes &&
-      remainingBudget - place.price >= 0 &&
-      isOpenDuring(currentTime, visitEnd, place)
-    ) {
-      guide.push({
-        place,
-        from: minutesToTime(currentTime),
-        to: minutesToTime(visitEnd),
-      });
-
-      currentTime = visitEnd;
-      remainingBudget -= place.price;
-    }
-  }
-
-  return json({ itinerary: guide });
-};
-
-function minutesToTime(mins: number): string {
-  const h = Math.floor(mins / 60);
-  const m = mins % 60;
-  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  return json({ itinerary: merged });
 }

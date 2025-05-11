@@ -1,27 +1,37 @@
 <script lang="ts">
-	let { generateGuide , showAll} = $props();
+	let { generateGuide, showAll } = $props();
 
 	let interests: string[] = $state([]);
-	let destination: {cityId:number,city:string} = $state({cityId:0,city:"Poznan"});
+	let destination: { cityId: number; city: string } = $state({ cityId: 0, city: 'Poznan' });
 	let budget = $state(50);
-	let currency = $state("EUR");
+	let currency = $state('EUR');
 	let start = $state('2025-04-25');
 	let end = $state('2025-04-25');
 	let disability = $state(false);
+
 	const categories = ['Nature', 'History', 'Art', 'Food', 'Sport', 'Shopping', 'Relaxation'];
 </script>
 
 <form
 	onsubmit={(e) => {
 		e.preventDefault();
-		generateGuide(destination.cityId,destination.city,interests, budget, currency,start, end);
+		generateGuide(
+			destination.cityId,
+			destination.city,
+			interests,
+			budget,
+			currency,
+			start,
+			end,
+			disability
+		);
 	}}
 	class="mt-4 flex flex-col gap-4"
 >
 	<label for="destination">
 		Where do you want to go ?
 		<select class="input" id="destination" bind:value={destination}>
-			<option value={{cityId:0,city:"Poznan"}}>Poznan</option>
+			<option value={{ cityId: 0, city: 'Poznan' }}>Poznan</option>
 		</select>
 	</label>
 
