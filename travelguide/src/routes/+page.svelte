@@ -1,4 +1,5 @@
 <script lang="ts">
+  
 	import maplibre from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { onMount } from 'svelte';
@@ -6,6 +7,7 @@
 	import { ChevronDown, ChevronUp } from '@steeze-ui/heroicons';
 	import Form from '$lib/components/Form.svelte';
 	import PlaceCard from '$lib/components/PlaceCard.svelte';
+	import SearchBar from '$lib/components/SearchBar.svelte';
 	import type { Place } from '$lib/types';
 	import Filters from '$lib/components/Filters.svelte';
 
@@ -34,17 +36,35 @@
 		markers = [];
 	}
 
-	async function generateGuide(interests, budget, start, end) {
+	async function generateGuide(
+		cityId,
+		city,
+		interests,
+		budget,
+		currency,
+		startDate,
+		endDate,
+		disability
+	) {
 		emptyMarkers();
 
 		const res = await fetch('/api/guide', {
 			method: 'POST',
-			body: JSON.stringify({ interests, budget, start, end })
+			body: JSON.stringify({
+				cityId,
+				city,
+				interests,
+				budget,
+				currency,
+				startDate,
+				endDate,
+				disability
+			})
 		});
 
 		submitted = true;
 		const data = await res.json();
-		selectedPlaces.places = data.itinerary.map((el) => el.place);
+		selectedPlaces.places = data.itinerary
 		updateList();
 	}
 
@@ -95,6 +115,18 @@
 		emptyMarkers();
 		showAll();
 	}
+	
+
+	async function searchPlaces(query: string) {
+		emptyMarkers();
+		const res = await fetch('/api/places');
+		const data = await res.json();
+		const q = query.toLowerCase();
+		selectedPlaces.places = data.places.filter((place) => place.name.toLowerCase().includes(q) || place.theme.toLowerCase().includes(q)|| place.typeName.toLowerCase().includes(q));
+		updateList();
+	}
+
+
 </script>
 
 <navbar class="absolute left-0 top-0 z-10 m-8 w-96 rounded-2xl bg-white/90 p-6">
@@ -105,8 +137,9 @@
 		</button>
 	</header>
 	{#if !collapsed}
-		<div class="max-h-[calc(100dvh-144px)] overflow-auto border-t-1 border-gray-200">
+		<div class="border-t-1 max-h-[calc(100dvh-144px)] overflow-auto border-gray-200">
 			{#if submitted}
+				<SearchBar {searchPlaces}></SearchBar>
 				<div class="mt-4 flex flex-col gap-2">
 					{#each selectedPlaces.places as place}
 						<PlaceCard {place} />
