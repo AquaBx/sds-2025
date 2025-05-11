@@ -33,12 +33,12 @@
 		markers = [];
 	}
 
-	async function generateGuide(interests, budget, start, end) {
+	async function generateGuide(interests, budget, start, end, disability) {
 		emptyMarkers();
 
 		const res = await fetch('/api/guide', {
 			method: 'POST',
-			body: JSON.stringify({ interests, budget, start, end })
+			body: JSON.stringify({ interests, budget, start, end, disability })
 		});
 
 		submitted = true;
