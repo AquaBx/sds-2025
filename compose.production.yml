@@ -17,10 +17,6 @@ services:
       - POSTGRES_DB=${database}
       - POSTGRES_PASSWORD=${password}
       - POSTGRES_USER=${username}
-    expose:
-      - 5432
-    ports:
-      - 5432:5432
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "${username}" ]
       interval: 10s
