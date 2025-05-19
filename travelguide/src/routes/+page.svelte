@@ -97,12 +97,24 @@
 		updateList();
 	}
 
-	function applyFilters(maxPrice: number, selectedThemes: string[]) {
+	function parseHour(time: string): number {
+		const [hour, minute] = time.split(':').map(Number);
+		return hour + minute / 60;
+	}
+
+	function applyFilters(maxPrice: number, selectedThemes: string[], hoursRange : number[]) {
 		emptyMarkers();
 		selectedPlaces = selectedPlacesCopy.filter((place) => {
 			const matchesPrice = maxPrice === null || place.price <= maxPrice;
 			const matchesTheme = selectedThemes.length === 0 || selectedThemes.includes(place.theme);
-			return matchesPrice && matchesTheme;
+			
+			const opening = parseHour(place.openingTime);
+			const closing = parseHour(place.closingTime);
+			const isAlwaysOpen = place.openingTime === "0:00" && place.closingTime === "0:00";
+			const matchesTime = isAlwaysOpen || (opening < hoursRange[1] && closing > hoursRange[0]);
+
+
+			return matchesPrice && matchesTheme && matchesTime;
 		});
 		updateList();
 	}

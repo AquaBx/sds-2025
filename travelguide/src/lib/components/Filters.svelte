@@ -1,25 +1,28 @@
 <script lang="ts">
 	import * as Accordion from '$lib/components/ui/accordion/index.js';
+	import RangeSlider from 'svelte-range-slider-pips';
+	import 'svelte-range-slider-pips/dist/style.css';
 
 	let { applyFilters, resetFilters } = $props();
 	let maxPrice = $state(50);
 	let selectedthemes = $state([]);
-const themes = [
-	'Botanic Garden',
-	'ZOO',
-	'Football Stadium',
-	'Art',
-	'Military',
-	'Archeology',
-	'Nature',
-	'Shopping',
-	'Restaurant',
-	'Typical Food',
-	'Americain',
-	'Burger',
-	'Water',
-	'Indoor Climbing'
-];
+	let hoursRange =$state([0,24]);
+	const themes = [
+		'Botanic Garden',
+		'ZOO',
+		'Football Stadium',
+		'Art',
+		'Military',
+		'Archeology',
+		'Nature',
+		'Shopping',
+		'Restaurant',
+		'Typical Food',
+		'Americain',
+		'Burger',
+		'Water',
+		'Indoor Climbing'
+	];
 </script>
 
 <div
@@ -39,6 +42,23 @@ const themes = [
 			min="0"
 		/>
 	</label>
+	
+	
+
+
+<label>
+	Opening hours: {hoursRange[0]}:00 - {hoursRange[1]}:00
+</label>
+
+	<RangeSlider range
+		min={0}
+		max={24}
+		step={1}
+		
+		bind:values={hoursRange}
+	/>
+	
+	
 	<Accordion.Root class="w-full">
 		<Accordion.Item value="item-1">
 			<Accordion.Trigger>Themes</Accordion.Trigger>
@@ -54,15 +74,17 @@ const themes = [
 			</Accordion.Content>
 		</Accordion.Item>
 		<Accordion.Item value="item-2">
-			<Accordion.Trigger>Empty</Accordion.Trigger>
-			<Accordion.Content>empty</Accordion.Content>
+			<Accordion.Trigger>Categories</Accordion.Trigger>
+			<Accordion.Content>
+
+			</Accordion.Content>
 		</Accordion.Item>
 	</Accordion.Root>
 
 	<div class="mt-4 flex justify-between">
 		<button
 			class="button rounded bg-blue-500 px-4 py-2 text-white"
-			onclick={() => applyFilters(maxPrice, selectedthemes)}
+			onclick={() => applyFilters(maxPrice, selectedthemes, hoursRange)}
 		>
 			Apply
 		</button>
@@ -71,3 +93,19 @@ const themes = [
 		</button>
 	</div>
 </div>
+
+<style>
+	:root {
+		--range-slider:            hsl(180, 3.9%, 84.9%);
+		--range-handle-inactive:   hsl(180, 4.6%, 61.8%);
+		--range-handle:            hsl(234, 67.6%, 71%);
+		--range-handle-focus:      hsl(244.1, 63.2%, 54.1%);
+		--range-handle-border:     hsl(234, 67.6%, 71%);
+		--range-range-inactive:    hsl(180, 34%, 41%);
+		--range-range:             hsl(244.1, 63.2%, 54.1%);
+		--range-range-limit:       hsl(180, 6.9%, 74.3%);
+		--range-float-inactive:    hsl(180, 4.6%, 61.8%);
+		--range-float:             hsl(244.1, 63.2%, 54.1%);
+		--range-float-text:        hsl(0, 0%, 100%);
+	}
+</style>
