@@ -35,28 +35,31 @@
 	<h2 class="text-lg font-semibold">Filters</h2>
 	<label>
 		Maximum Price: {maxPrice}
-		<input
-			type="range"
+		
+		<RangeSlider range = "min"
+			min={0}
+			max={100}
+			step={1}
+			
 			bind:value={maxPrice}
-			class="mt-2 w-full rounded border border-gray-300 p-2"
-			min="0"
 		/>
 	</label>
 	
 	
 
 
-<label>
-	Opening hours: {hoursRange[0]}:00 - {hoursRange[1]}:00
-</label>
+	<label>
+		Opening hours: {hoursRange[0]}:00 - {hoursRange[1]}:00
+		<RangeSlider range
+			min={0}
+			max={24}
+			step={1}
+			
+			bind:values={hoursRange}
+		/>
+	</label>
 
-	<RangeSlider range
-		min={0}
-		max={24}
-		step={1}
-		
-		bind:values={hoursRange}
-	/>
+	
 	
 	
 	<Accordion.Root class="w-full">
@@ -96,16 +99,11 @@
 
 <style>
 	:root {
-		--range-slider:            hsl(180, 3.9%, 84.9%);
-		--range-handle-inactive:   hsl(180, 4.6%, 61.8%);
-		--range-handle:            hsl(234, 67.6%, 71%);
-		--range-handle-focus:      hsl(244.1, 63.2%, 54.1%);
-		--range-handle-border:     hsl(234, 67.6%, 71%);
-		--range-range-inactive:    hsl(180, 34%, 41%);
-		--range-range:             hsl(244.1, 63.2%, 54.1%);
-		--range-range-limit:       hsl(180, 6.9%, 74.3%);
-		--range-float-inactive:    hsl(180, 4.6%, 61.8%);
-		--range-float:             hsl(244.1, 63.2%, 54.1%);
-		--range-float-text:        hsl(0, 0%, 100%);
+		--range-slider:            rgb(209 213 219);
+		--range-handle:            rgb(59 130 246);
+		--range-handle-focus:      rgb(59 130 246);
+		--range-handle-inactive:   rgb(59 130 246);
+		--range-range-inactive:    rgb(59 130 246);
+		--range-range:             rgb(59 130 246);
 	}
 </style>
