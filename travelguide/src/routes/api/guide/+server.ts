@@ -1,4 +1,4 @@
-import prisma from '$lib/prisma';
+import PocketBase from 'pocketbase';
 import { Mistral } from '@mistralai/mistralai';
 import type { SystemMessage, ToolMessage, UserMessage, AssistantMessage } from '@mistralai/mistralai/models/components';
 import { json, type RequestHandler } from '@sveltejs/kit';
@@ -8,6 +8,7 @@ const model = "ministral-3b-latest";
 // const model = "mistral-small-latest";
 
 const client = new Mistral({ apiKey: apiKey });
+const pb = new PocketBase(process.env.DATABASE);
 
 
 type Messages = ((SystemMessage & {
@@ -47,20 +48,11 @@ const tools = [
   },
 ]
 
-const namesToFunctions : {[k:string]:(arg0: any)=>any} = {
-  'findActivitiesInCity': async ({cityId,interests} : {cityId:number,interests:string[]}) => {
-    return await prisma.activity.findMany({
-      where: {
-        cityId: { equals: cityId },
-        tags: {
-          some: {
-            name: {
-              in: interests
-            }
-          }
-        }
-      }
-    })
+const namesToFunctions: { [k: string]: (arg0: any) => any } = {
+  'findActivitiesInCity': async ({ cityId, interests }: { cityId: number, interests: string[] }) => {
+    return await pb.collection('activities').getFullList({
+      filter: `(${interests.map(tag => `tags?~'${tag}'`).join('||')}) && city.id='${cityId}'`,
+    });
   },
 };
 
@@ -102,7 +94,7 @@ export const POST: RequestHandler = async ({ request }) => {
   });
 
   const msg = (response.choices!)[0].message as (AssistantMessage & { role: "assistant"; })
-  messages.push( msg );
+  messages.push(msg);
   const toolCall = msg.toolCalls![0];
 
   const functionName = toolCall.function.name;
@@ -126,19 +118,14 @@ export const POST: RequestHandler = async ({ request }) => {
   let content = (response.choices)![0].message.content!;
   content = (content as string).replace('```json', '').replace('```', '');
   const itinerary = JSON.parse(content)
-  const keys = itinerary.map(e => e.id)
 
-  const locations = await prisma.activity.findMany({
-    where: {
-      id: { in: keys }
-    },
-    include: {
-      picture: true,
-    },
-  })
+  const locations = await pb.collection('activities').getFullList({
+    filter: itinerary.map(k => `id = '${k.id}'`).join('||')
+  });
 
   const merged = itinerary.map(it => {
-    const location = locations.find(loc => loc.id === it.id);
+    let location = locations.find(loc => loc.id === it.id);
+    location.picture = `${process.env.DATABASE}/api/files/activities/${location.id}/${location.picture}`
     return {
       ...it,
       ...location
