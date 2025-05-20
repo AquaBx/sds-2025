@@ -1,12 +1,11 @@
 <script lang="ts">
 	import * as Accordion from '$lib/components/ui/accordion/index.js';
-	import RangeSlider from 'svelte-range-slider-pips';
-	import 'svelte-range-slider-pips/dist/style.css';
+	import { Slider } from '$lib/components/ui/slider/index.js';
 
 	let { applyFilters, resetFilters } = $props();
 	let maxPrice = $state(50);
 	let selectedthemes = $state([]);
-	let hoursRange =$state([0,24]);
+	let hoursRange = $state([0, 24]);
 	const themes = [
 		'Botanic Garden',
 		'ZOO',
@@ -35,33 +34,15 @@
 	<h2 class="text-lg font-semibold">Filters</h2>
 	<label>
 		Maximum Price: {maxPrice}
-		
-		<RangeSlider range = "min"
-			min={0}
-			max={100}
-			step={1}
-			
-			bind:value={maxPrice}
-		/>
-	</label>
-	
-	
 
+		<Slider type="single" min={0} max={100} step={1} bind:value={maxPrice} />
+	</label>
 
 	<label>
 		Opening hours: {hoursRange[0]}:00 - {hoursRange[1]}:00
-		<RangeSlider range
-			min={0}
-			max={24}
-			step={1}
-			
-			bind:values={hoursRange}
-		/>
+		<Slider type="multiple" min={0} max={24} step={1} bind:value={hoursRange} />
 	</label>
 
-	
-	
-	
 	<Accordion.Root class="w-full">
 		<Accordion.Item value="item-1">
 			<Accordion.Trigger>Themes</Accordion.Trigger>
@@ -78,9 +59,7 @@
 		</Accordion.Item>
 		<Accordion.Item value="item-2">
 			<Accordion.Trigger>Categories</Accordion.Trigger>
-			<Accordion.Content>
-
-			</Accordion.Content>
+			<Accordion.Content></Accordion.Content>
 		</Accordion.Item>
 	</Accordion.Root>
 
@@ -99,11 +78,11 @@
 
 <style>
 	:root {
-		--range-slider:            rgb(209 213 219);
-		--range-handle:            rgb(59 130 246);
-		--range-handle-focus:      rgb(59 130 246);
-		--range-handle-inactive:   rgb(59 130 246);
-		--range-range-inactive:    rgb(59 130 246);
-		--range-range:             rgb(59 130 246);
+		--range-slider: rgb(209 213 219);
+		--range-handle: rgb(59 130 246);
+		--range-handle-focus: rgb(59 130 246);
+		--range-handle-inactive: rgb(59 130 246);
+		--range-range-inactive: rgb(59 130 246);
+		--range-range: rgb(59 130 246);
 	}
 </style>

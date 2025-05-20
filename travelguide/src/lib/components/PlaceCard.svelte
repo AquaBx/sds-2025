@@ -13,14 +13,13 @@
 	function close() {
 		expanded = false;
 	}
-	
 </script>
 
 <div class="flex flex-col gap-4 rounded-lg border border-gray-300 p-4">
 	<img
 		class="object-cover aspect-video w-full cursor-pointer rounded-lg transition-transform duration-300 ease-in-out hover:scale-105"
 		onclick={toggle}
-		src={place.picture[0]?.url}
+		src={place.picture}
 		alt={place.name}
 	/>
 	<div class="flex flex-1 flex-col justify-center">
