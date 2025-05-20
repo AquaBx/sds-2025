@@ -50,10 +50,9 @@ const tools = [
 
 const namesToFunctions: { [k: string]: (arg0: any) => any } = {
   'findActivitiesInCity': async ({ cityId, interests }: { cityId: number, interests: string[] }) => {
-    const req = await pb.collection('activities').getFullList({
-      filter: `${interests} - tags != [] && cityId = ${cityId}`,
+    return await pb.collection('activities').getFullList({
+      filter: `(${interests.map(tag => `tags?~'${tag}'`).join('||')}) && city.id='${cityId}'`,
     });
-    return req
   },
 };
 
@@ -119,11 +118,9 @@ export const POST: RequestHandler = async ({ request }) => {
   let content = (response.choices)![0].message.content!;
   content = (content as string).replace('```json', '').replace('```', '');
   const itinerary = JSON.parse(content)
-  const keys = itinerary.map(e => e.id)
 
   const locations = await pb.collection('activities').getFullList({
-    sort: '-someField',
-    filter: `${keys} ~ id`,
+    filter: itinerary.map(k => `id = '${k.id}'`).join('||')
   });
 
   const merged = itinerary.map(it => {
