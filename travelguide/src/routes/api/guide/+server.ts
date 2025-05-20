@@ -124,7 +124,8 @@ export const POST: RequestHandler = async ({ request }) => {
   });
 
   const merged = itinerary.map(it => {
-    const location = locations.find(loc => loc.id === it.id);
+    let location = locations.find(loc => loc.id === it.id);
+    location.picture = `${process.env.DATABASE}/api/files/activities/${location.id}/${location.picture}`
     return {
       ...it,
       ...location
