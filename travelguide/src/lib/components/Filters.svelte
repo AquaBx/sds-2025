@@ -1,25 +1,28 @@
 <script lang="ts">
 	import * as Accordion from '$lib/components/ui/accordion/index.js';
+	import RangeSlider from 'svelte-range-slider-pips';
+	import 'svelte-range-slider-pips/dist/style.css';
 
 	let { applyFilters, resetFilters } = $props();
 	let maxPrice = $state(50);
 	let selectedthemes = $state([]);
-const themes = [
-	'Botanic Garden',
-	'ZOO',
-	'Football Stadium',
-	'Art',
-	'Military',
-	'Archeology',
-	'Nature',
-	'Shopping',
-	'Restaurant',
-	'Typical Food',
-	'Americain',
-	'Burger',
-	'Water',
-	'Indoor Climbing'
-];
+	let hoursRange =$state([0,24]);
+	const themes = [
+		'Botanic Garden',
+		'ZOO',
+		'Football Stadium',
+		'Art',
+		'Military',
+		'Archeology',
+		'Nature',
+		'Shopping',
+		'Restaurant',
+		'Typical Food',
+		'Americain',
+		'Burger',
+		'Water',
+		'Indoor Climbing'
+	];
 </script>
 
 <div
@@ -32,13 +35,33 @@ const themes = [
 	<h2 class="text-lg font-semibold">Filters</h2>
 	<label>
 		Maximum Price: {maxPrice}
-		<input
-			type="range"
+		
+		<RangeSlider range = "min"
+			min={0}
+			max={100}
+			step={1}
+			
 			bind:value={maxPrice}
-			class="mt-2 w-full rounded border border-gray-300 p-2"
-			min="0"
 		/>
 	</label>
+	
+	
+
+
+	<label>
+		Opening hours: {hoursRange[0]}:00 - {hoursRange[1]}:00
+		<RangeSlider range
+			min={0}
+			max={24}
+			step={1}
+			
+			bind:values={hoursRange}
+		/>
+	</label>
+
+	
+	
+	
 	<Accordion.Root class="w-full">
 		<Accordion.Item value="item-1">
 			<Accordion.Trigger>Themes</Accordion.Trigger>
@@ -54,15 +77,17 @@ const themes = [
 			</Accordion.Content>
 		</Accordion.Item>
 		<Accordion.Item value="item-2">
-			<Accordion.Trigger>Empty</Accordion.Trigger>
-			<Accordion.Content>empty</Accordion.Content>
+			<Accordion.Trigger>Categories</Accordion.Trigger>
+			<Accordion.Content>
+
+			</Accordion.Content>
 		</Accordion.Item>
 	</Accordion.Root>
 
 	<div class="mt-4 flex justify-between">
 		<button
 			class="button rounded bg-blue-500 px-4 py-2 text-white"
-			onclick={() => applyFilters(maxPrice, selectedthemes)}
+			onclick={() => applyFilters(maxPrice, selectedthemes, hoursRange)}
 		>
 			Apply
 		</button>
@@ -71,3 +96,14 @@ const themes = [
 		</button>
 	</div>
 </div>
+
+<style>
+	:root {
+		--range-slider:            rgb(209 213 219);
+		--range-handle:            rgb(59 130 246);
+		--range-handle-focus:      rgb(59 130 246);
+		--range-handle-inactive:   rgb(59 130 246);
+		--range-range-inactive:    rgb(59 130 246);
+		--range-range:             rgb(59 130 246);
+	}
+</style>
