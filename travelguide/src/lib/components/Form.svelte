@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	let { generateGuide, showAll } = $props();
 
 	let interests: string[] = $state([]);
@@ -8,6 +10,13 @@
 	let start = $state('2025-04-25');
 	let end = $state('2025-04-25');
 	let disability = $state(false);
+
+	let cities = $state([]);
+
+	onMount(async () => {
+		cities = (await (await fetch('/api/cities')).json()).cities;
+		destination = cities[0]
+	});
 
 	const categories = ['Nature', 'History', 'Art', 'Food', 'Sport', 'Shopping', 'Relaxation'];
 </script>
@@ -31,7 +40,9 @@
 	<label for="destination">
 		Where do you want to go ?
 		<select class="input" id="destination" bind:value={destination}>
-			<option value={{ cityId: 0, city: 'Poznan' }}>Poznan</option>
+			{#each cities as city}
+				<option value={city}>{city.name}</option>
+			{/each}
 		</select>
 	</label>
 
