@@ -55,6 +55,7 @@
 	"dependencies": {
 		"@prisma/client": "^6.7.0",
 		"prisma": "^6.7.0",
+		"svelte-range-slider-pips": "^3.2.2",
 		"tailwindcss-animate": "^1.0.7",
 		"tsx": "^4.19.4"
 	},
