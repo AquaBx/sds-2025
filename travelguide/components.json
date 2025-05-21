@@ -5,12 +5,12 @@
 		"baseColor": "zinc"
 	},
 	"aliases": {
-		"components": "$lib/components/",
+		"components": "$lib/components",
 		"utils": "$lib/utils",
-		"ui": "$lib/components/ui/",
-		"hooks": "$lib/hooks/",
-		"lib": "$lib/"
+		"ui": "$lib/components/ui",
+		"hooks": "$lib/hooks",
+		"lib": "$lib"
 	},
 	"typescript": true,
-	"registry": "https://tw3.shadcn-svelte.com/registry/default"
+	"registry": "https://next.shadcn-svelte.com/registry"
 }
