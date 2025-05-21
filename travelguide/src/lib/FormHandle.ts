@@ -7,6 +7,7 @@ export const handler = ({
     action,
     cancel,
     submitter,
+    controller,
 }: {
     action: URL;
     formData: FormData;
@@ -16,7 +17,12 @@ export const handler = ({
     cancel: () => void;
 }) => {
     return async ({ result, update }) => {
-        activities.set(result.data.activities)
+        if (result.type === 'success' && result.data?.activities) {
+            activities.set(result.data.activities);
+        } else if (result.type === 'error') {
+            // Handle error, possibly show a toast notification
+            toast('Form submission failed:', result.error);
+        }
         update();
     };
 };

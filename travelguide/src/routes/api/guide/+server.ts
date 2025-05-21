@@ -8,7 +8,7 @@ const model = "ministral-3b-latest";
 // const model = "mistral-small-latest";
 
 const client = new Mistral({ apiKey: apiKey });
-const pb = new PocketBase("process.env.DATABASE");
+const pb = new PocketBase(process.env.DATABASE);
 
 
 type Messages = ((SystemMessage & {

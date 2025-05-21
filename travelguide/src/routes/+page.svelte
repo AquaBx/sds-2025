@@ -4,10 +4,10 @@
 	import { onMount } from 'svelte';
 	let { data } = $props();
 	let { cities, tags, types } = data;
-	import * as Tabs from '$lib/components/ui/tabs/index.js';
-	import { MapManager } from '$lib/MapManager.js';
+	import * as Tabs from '$lib/components/ui/tabs';
+	import { MapManager } from '$lib/MapManager';
 	import Search from '$lib/views/Search.svelte';
-	import { activities } from '$lib/store.js';
+	import { activities } from '$lib/store';
 	import { ScrollArea } from '$lib/components/ui/scroll-area/';
 	import PlaceCard from '$lib/components/PlaceCard.svelte';
 
@@ -30,7 +30,7 @@
 </script>
 
 {#if mounted}
-	<navbar
+	<nav
 		class="inset-x-4 bottom-4 md:inset-x-unset md:inset-y-4 md:left-4 md:max-w-md absolute z-10 rounded-2xl bg-white/90 p-8 flex flex-col gap-4"
 	>
 		<Tabs.Root value="planner">
@@ -51,6 +51,6 @@
 				<PlaceCard place={activity}></PlaceCard>
 			{/each}
 		</ScrollArea>
-	</navbar>
+	</nav>
 {/if}
 <div bind:this={mapDiv} class="z-0 h-dvh"></div>

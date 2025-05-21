@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Toaster } from 'svelte-sonner';
 	import '../app.css';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -6,3 +7,5 @@
 </script>
 
 {@render children()}
+
+<Toaster></Toaster>

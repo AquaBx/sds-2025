@@ -19,7 +19,7 @@
 	<h2 class="text-lg font-semibold">Filters</h2>
 	<label>
 		Maximum Price: {maxPrice}
-        <input type="hidden" name="price" value={maxPrice} >
+        <input type="hidden" name="maxPrice" value={maxPrice} >
 		<Slider  type="single" min={0} max={100} step={1} bind:value={maxPrice} />
 	</label>
 
