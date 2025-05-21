@@ -1,21 +1,16 @@
-FROM node:24.0-slim AS node
+FROM oven/bun:alpine AS bun
 
 WORKDIR /app
 
 COPY ./travelguide/package*.json ./
-RUN npm install
+RUN bun install
 
 COPY ./travelguide .
-RUN npx prisma generate
-RUN npm run build
+RUN bun run build
 
-FROM node:24.0-slim AS nodeprod
+FROM oven/bun:alpine AS bunprod
 WORKDIR /app
 EXPOSE 3000
-COPY ./travelguide/package*.json ./
-COPY ./start.sh ./
-RUN npm install --omit=dev
-COPY ./travelguide/prisma "/app/prisma"
-COPY --from=node /app/build "/app/dist"
+COPY --from=bun /app/build "."
 
-CMD ["./start.sh"]
+CMD ["bun", "index.js"]
