@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	let { generateGuide, showAll } = $props();
+	let { generateGuide, showAll, cities, types } = $props();
 
 	let interests: string[] = $state([]);
 	let destination: { cityId: number; city: string } = $state({ cityId: 0, city: 'Poznan' });
@@ -10,15 +10,6 @@
 	let start = $state('2025-04-25');
 	let end = $state('2025-04-25');
 	let disability = $state(false);
-
-	let cities = $state([]);
-
-	onMount(async () => {
-		cities = (await (await fetch('/api/cities')).json()).cities;
-		destination = cities[0]
-	});
-
-	const categories = ['Nature', 'History', 'Art', 'Food', 'Sport', 'Shopping', 'Relaxation'];
 </script>
 
 <form
@@ -49,10 +40,10 @@
 	<label>
 		What are you into?
 		<fieldset class="flex flex-col gap-1 pl-4">
-			{#each categories as category}
+			{#each types as type}
 				<label>
-					<input class="checkbox" type="checkbox" bind:group={interests} value={category} />
-					{category}
+					<input class="checkbox" type="checkbox" bind:group={interests} value={type.id} />
+					{type.text}
 				</label>
 			{/each}
 		</fieldset>

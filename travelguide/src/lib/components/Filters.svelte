@@ -2,26 +2,10 @@
 	import * as Accordion from '$lib/components/ui/accordion/index.js';
 	import { Slider } from '$lib/components/ui/slider/index.js';
 
-	let { applyFilters, resetFilters } = $props();
+	let { applyFilters, resetFilters, tags } = $props();
 	let maxPrice = $state(50);
-	let selectedthemes = $state([]);
+	let selectedtags = $state([]);
 	let hoursRange = $state([0, 24]);
-	const themes = [
-		'Botanic Garden',
-		'ZOO',
-		'Football Stadium',
-		'Art',
-		'Military',
-		'Archeology',
-		'Nature',
-		'Shopping',
-		'Restaurant',
-		'Typical Food',
-		'Americain',
-		'Burger',
-		'Water',
-		'Indoor Climbing'
-	];
 </script>
 
 <div
@@ -48,10 +32,10 @@
 			<Accordion.Trigger>Themes</Accordion.Trigger>
 			<Accordion.Content>
 				<fieldset class="flex flex-col gap-1">
-					{#each themes as theme}
+					{#each tags as tag}
 						<label>
-							<input type="checkbox" bind:group={selectedthemes} value={theme} />
-							{theme}
+							<input type="checkbox" bind:group={selectedtags} value={tag.id} />
+							{tag.text}
 						</label>
 					{/each}
 				</fieldset>
@@ -66,7 +50,7 @@
 	<div class="mt-4 flex justify-between">
 		<button
 			class="button rounded bg-blue-500 px-4 py-2 text-white"
-			onclick={() => applyFilters(maxPrice, selectedthemes, hoursRange)}
+			onclick={() => applyFilters(maxPrice, selectedtags, hoursRange)}
 		>
 			Apply
 		</button>

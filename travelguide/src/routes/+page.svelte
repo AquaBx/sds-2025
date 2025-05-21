@@ -10,6 +10,9 @@
 	import type { Place } from '$lib/types';
 	import Filters from '$lib/components/Filters.svelte';
 
+	let { data } = $props();
+	let { cities, tags, types } = data;
+
 	let mapDiv: HTMLDivElement;
 	let map: maplibre.Map;
 	let collapsed = $state(false);
@@ -76,11 +79,9 @@
 	}
 
 	function updateList() {
-		for (let location of selectedPlaces) {
+		for (let place of selectedPlaces) {
 			const marker = new maplibre.Marker();
-			let coords = location.location.split(';');
-			coords.reverse();
-			marker.setLngLat(coords);
+			marker.setLngLat([place.location.lat, place.location.lon]);
 			markers.push(marker);
 			marker.addTo(map);
 		}
@@ -102,17 +103,16 @@
 		return hour + minute / 60;
 	}
 
-	function applyFilters(maxPrice: number, selectedThemes: string[], hoursRange : number[]) {
+	function applyFilters(maxPrice: number, selectedThemes: string[], hoursRange: number[]) {
 		emptyMarkers();
 		selectedPlaces = selectedPlacesCopy.filter((place) => {
 			const matchesPrice = maxPrice === null || place.price <= maxPrice;
 			const matchesTheme = selectedThemes.length === 0 || selectedThemes.includes(place.theme);
-			
+
 			const opening = parseHour(place.openingTime);
 			const closing = parseHour(place.closingTime);
-			const isAlwaysOpen = place.openingTime === "0:00" && place.closingTime === "0:00";
+			const isAlwaysOpen = place.openingTime === '0:00' && place.closingTime === '0:00';
 			const matchesTime = isAlwaysOpen || (opening < hoursRange[1] && closing > hoursRange[0]);
-
 
 			return matchesPrice && matchesTheme && matchesTime;
 		});
@@ -154,9 +154,9 @@
 					{/each}
 				</div>
 				<button class="button mt-4 w-full" onclick={() => cancel()}> Cancel </button>
-				<Filters {applyFilters} {resetFilters} />
+				<Filters {applyFilters} {resetFilters} {tags} />
 			{:else}
-				<Form {generateGuide} {showAll}></Form>
+				<Form {generateGuide} {showAll} {types} {cities}></Form>
 			{/if}
 		</div>
 	{/if}
