@@ -23,7 +23,6 @@ export namespace MapManager {
             target: componentDom,
             props: { initial: 13 }
         });
-        // map.fitBounds(bounds, { padding: 50 });
 
         popup = new maplibre.Popup({ offset: 25 }).setDOMContent(componentDom);
     }

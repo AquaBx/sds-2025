@@ -1,5 +1,5 @@
 import { toast } from "svelte-sonner";
-import { activities } from "./store";
+import { config } from "./store.svelte";
 
 export const handler = ({
     formElement,
@@ -18,11 +18,12 @@ export const handler = ({
 }) => {
     return async ({ result, update }) => {
         if (result.type === 'success' && result.data?.activities) {
-            activities.set(result.data.activities);
+            config.activities = result.data.activities;
+            config.hasSearched = true;
         } else if (result.type === 'error') {
             // Handle error, possibly show a toast notification
             toast('Form submission failed:', result.error);
         }
-        update();
+        // update();
     };
 };
