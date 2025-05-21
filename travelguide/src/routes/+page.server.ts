@@ -24,11 +24,11 @@ export const actions: Actions = {
         const formData = await event.request.formData();
         const interests = (formData.get("tags") || "").split(",")
         const search = (formData.get("search") || "")
-        const hourRange = (formData.get("hourRange") || "")
+        const hourRange = (formData.get("hourRange") || "00,24").split(",").map(h => h.length === 1 ? `0${h}` : h);
         const maxPrice = (formData.get("maxPrice") || 1000)
 
         const activities = await pb.collection('activities').getFullList({
-            filter: `(${interests.map(tag => `tags?~'${tag}'`).join('||')})&&(description~'${search}'||name~'${search}')&&(price<${maxPrice})`
+            filter: `(${interests.map(tag => `tags?~'${tag}'`).join('||')})&&(description~'${search}'||name~'${search}')&&(price<${maxPrice})&&(openingTime<=${hourRange[0]})&&(closingTime>=${hourRange[1]})`
         });
 
         for (const p of activities) {

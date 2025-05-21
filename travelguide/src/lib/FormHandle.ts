@@ -21,8 +21,9 @@ export const handler = ({
             config.activities = result.data.activities;
             config.hasSearched = true;
         } else if (result.type === 'error') {
-            // Handle error, possibly show a toast notification
-            toast('Form submission failed:', result.error);
+            toast.error('Form submission failed', {
+                description: result.error?.message || 'Please try again'
+            });
         }
         // update();
     };

@@ -9,10 +9,11 @@
 	import PlaceCard from '$lib/components/PlaceCard.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { fly } from 'svelte/transition';
+	import { toast } from 'svelte-sonner';
 
 	let { data } = $props();
 
-	loadData(data)
+	loadData(data);
 
 	let mounted = $state(false);
 	let mapDiv: HTMLDivElement;
@@ -33,7 +34,14 @@
 
 	onMount(() => {
 		mounted = true;
-		MapManager.init(mapDiv);
+		try {
+			MapManager.init(mapDiv);
+		} catch (error) {
+			console.error('Failed to initialize map:', error);
+			toast.error('Failed to load map', {
+				description: 'Please try refreshing the page'
+			});
+		}
 	});
 
 	let tab = $state('planner');
