@@ -13,10 +13,19 @@ export namespace MapManager {
     export function init(mapDiv: HTMLDivElement) {
         map = new maplibre.Map({
             container: mapDiv, // container id
-            style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json', // style URL
+            style: 'https://tiles.basemaps.cartocdn.com/gl/positron-gl-style/style.json', // style URL
             center: [0, 0], // starting position [lng, lat]
             zoom: 1 // starting zoom
         });
+
+        const query = window.matchMedia('(prefers-color-scheme: dark)')
+        changelayer(query)
+
+        map.on('idle', () => {
+            const query = window.matchMedia('(prefers-color-scheme: dark)')
+            changelayer(query)
+            query.addEventListener('change', changelayer);
+        })
 
         const componentDom = document.createElement('div');
         mount(MarkerPopup, {
@@ -43,5 +52,10 @@ export namespace MapManager {
         MapManager.markers.forEach((m) => m.remove());
         MapManager.markers = []
         bounds = new maplibre.LngLatBounds();
+    }
+
+    function changelayer(event) {
+        const layer = event.matches ? "dark-matter-gl-style" : "positron-gl-style"
+        map.setStyle(`https://tiles.basemaps.cartocdn.com/gl/${layer}/style.json`)
     }
 }

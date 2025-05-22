@@ -49,7 +49,7 @@
 
 {#if mounted}
 	<nav
-		class="inset-x-4 bottom-4 md:inset-x-unset md:inset-y-4 md:left-4 md:max-w-md absolute z-10 rounded-2xl bg-white/90 p-8 flex flex-col gap-4"
+		class="inset-x-4 bottom-4 md:inset-x-unset md:inset-y-4 md:left-4 md:max-w-md absolute z-10 rounded-2xl bg-background/15 p-8 flex flex-col gap-4 backdrop-blur-sm border-border border-2"
 	>
 		{#if config.hasSearched}
 			<div in:fly out:fly class="h-full flex-col flex">
