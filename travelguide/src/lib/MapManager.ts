@@ -13,7 +13,7 @@ export namespace MapManager {
     export function init(mapDiv: HTMLDivElement) {
         map = new maplibre.Map({
             container: mapDiv, // container id
-            style: 'https://tiles.basemaps.cartocdn.com/gl/voyager-gl-style/style.json', // style URL
+            style: 'https://tiles.basemaps.cartocdn.com/gl/positron-gl-style/style.json', // style URL
             center: [0, 0], // starting position [lng, lat]
             zoom: 1 // starting zoom
         });
@@ -55,7 +55,7 @@ export namespace MapManager {
     }
 
     function changelayer(event) {
-        const layer = event.matches ? "dark-matter-gl-style" : "voyager-gl-style"
+        const layer = event.matches ? "dark-matter-gl-style" : "positron-gl-style"
         map.setStyle(`https://tiles.basemaps.cartocdn.com/gl/${layer}/style.json`)
     }
 }
