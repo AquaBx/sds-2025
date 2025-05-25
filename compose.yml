@@ -4,9 +4,6 @@ services:
       - .env
     build:
       context: ./
-    environment:
-      MISTRAL_API_KEY: "${MISTRAL_API_KEY}"
-      DATABASE_URL: "${DATABASE}"
     ports:
       - 3000:3000
     develop:
