@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
+	import { Label } from '$lib/components/ui/label';
 	import * as Select from '$lib/components/ui/select';
 	import { Toggle } from '$lib/components/ui/toggle';
 	import { Separator } from '$lib/components/ui/separator';
@@ -19,13 +20,14 @@
 >
 	<h2 class="bold text-xl">Where do you want to go ?</h2>
 	<div class="w-full">
-		<Select.Root class="w-full" type="single" name="city" bind:value={guideFormdata.destination.id}>
-			<Select.Trigger>
+		<input type="hidden" name="city"  bind:value={guideFormdata.destination.id}>
+		<Select.Root type="single" bind:value={guideFormdata.destination}>
+			<Select.Trigger class="w-full">
 				{guideFormdata.destination.name}
 			</Select.Trigger>
 			<Select.Content>
 				{#each config.cities as city}
-					<Select.Item value={city.id}>{city.name}</Select.Item>
+					<Select.Item value={city}>{city.name}</Select.Item>
 				{/each}
 			</Select.Content>
 		</Select.Root>
@@ -72,7 +74,10 @@
 	<Separator class="my-2" />
 	<h2 class="bold text-xl">Extra</h2>
 	<div class="flex gap-2 w-full flex-col">
-		<Checkbox name="disability" bind:checked={guideFormdata.disability}></Checkbox>
+		<Label>
+			<Checkbox name="disability" bind:checked={guideFormdata.disability}></Checkbox>
+			Accessibilty
+		</Label>
 	</div>
 
 	<Button type="submit">Generate Guide</Button>

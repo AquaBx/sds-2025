@@ -52,8 +52,8 @@
 		class="inset-x-4 bottom-4 md:inset-x-unset md:inset-y-4 md:left-4 md:max-w-md absolute z-10 rounded-2xl bg-background/15 p-8 flex flex-col gap-4 backdrop-blur-sm border-border border-2"
 	>
 		{#if config.hasSearched}
-			<div in:fly out:fly class="h-full flex-col flex">
-				<ScrollArea class="flex-1">
+			<div in:fly out:fly class="h-full flex-col flex gap-2">
+				<ScrollArea class="flex-1 h-1/2">
 					{#each config.activities as activity}
 						<PlaceCard place={activity}></PlaceCard>
 					{/each}
@@ -61,8 +61,8 @@
 				<Button onclick={() => (config.hasSearched = false)}>Cancel</Button>
 			</div>
 		{:else if config.hasItinerate}
-			<div in:fly out:fly class="h-full flex-col flex">
-				<ScrollArea class="flex-1">
+			<div in:fly out:fly class="h-full flex-col flex gap-2">
+				<ScrollArea class="flex-1 h-1/2">
 					{#each config.itinerary as activity}
 						<PlaceCard place={activity}></PlaceCard>
 						{activity.startingTime}
