@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
+	import { Label } from '$lib/components/ui/label';
 	import * as Select from '$lib/components/ui/select';
 	import { Toggle } from '$lib/components/ui/toggle';
 	import { Separator } from '$lib/components/ui/separator';
@@ -8,6 +9,7 @@
 	import { enhance } from '$app/forms';
 	import { handler } from '$lib/FormHandle';
 	import { config, guideFormdata } from '$lib/store.svelte';
+	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 </script>
 
 <form
@@ -18,8 +20,9 @@
 >
 	<h2 class="bold text-xl">Where do you want to go ?</h2>
 	<div class="w-full">
+		<input type="hidden" name="city"  bind:value={guideFormdata.destination.id}>
 		<Select.Root type="single" bind:value={guideFormdata.destination}>
-			<Select.Trigger>
+			<Select.Trigger class="w-full">
 				{guideFormdata.destination.name}
 			</Select.Trigger>
 			<Select.Content>
@@ -33,19 +36,31 @@
 	<h2 class="bold text-xl">What are you interested in ?</h2>
 	<div class="flex gap-2 w-full justify-center flex-wrap">
 		{#each guideFormdata.tags as tag}
-			<Toggle bind:pressed={tag.selected}>{tag.text}</Toggle>
+			<label for={tag.id}>
+				<input
+					type="checkbox"
+					class="hidden"
+					name="tags"
+					bind:checked={tag.selected}
+					value={tag.id}
+					id={tag.id}
+				/>
+				<Toggle bind:pressed={tag.selected}>{tag.text}</Toggle>
+			</label>
 		{/each}
 	</div>
 	<Separator class="my-2" />
 	<h2 class="bold text-xl">When do you want to go ?</h2>
 	<div class="w-full">
+		<input type="hidden" name="startDate" bind:value={guideFormdata.dates.start} />
+		<input type="hidden" name="endDate" bind:value={guideFormdata.dates.end} />
 		<DatePicker bind:value={guideFormdata.dates}></DatePicker>
 	</div>
 	<Separator class="my-2" />
 	<h2 class="bold text-xl">What is you budget ?</h2>
 	<div class="flex gap-2 w-full">
-		<Input class="" type="number"></Input>
-		<Select.Root type="single" bind:value={guideFormdata.currency}>
+		<Input name="budget" class="" type="number"></Input>
+		<Select.Root type="single" name="currency" bind:value={guideFormdata.currency}>
 			<Select.Trigger class="w-[180px]">
 				{guideFormdata.currency}
 			</Select.Trigger>
@@ -55,6 +70,14 @@
 				<Select.Item value="USD">US Dollar</Select.Item>
 			</Select.Content>
 		</Select.Root>
+	</div>
+	<Separator class="my-2" />
+	<h2 class="bold text-xl">Extra</h2>
+	<div class="flex gap-2 w-full flex-col">
+		<Label>
+			<Checkbox name="disability" bind:checked={guideFormdata.disability}></Checkbox>
+			Accessibilty
+		</Label>
 	</div>
 
 	<Button type="submit">Generate Guide</Button>

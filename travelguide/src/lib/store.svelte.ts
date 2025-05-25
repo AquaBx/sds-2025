@@ -2,10 +2,12 @@ import { getLocalTimeZone, today } from '@internationalized/date';
 
 export const config = $state({
 	activities: [],
+	itinerary: [],
 	cities: [],
 	tags: [],
 	types: [],
 	hasSearched: false,
+	hasItinerate: false,
 })
 
 export const searchFormdata = $state({
@@ -29,7 +31,8 @@ export const guideFormdata = $state({
 		id: '',
 		name: ''
 	},
-	currency: 'EUR'
+	currency: 'EUR',
+	disability: false
 });
 
 export const loadData = (data) => {
