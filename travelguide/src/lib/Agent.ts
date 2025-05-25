@@ -1,7 +1,7 @@
 import Cerebras from '@cerebras/cerebras_cloud_sdk';
 import type { ChatCompletionCreateParams } from '@cerebras/cerebras_cloud_sdk/resources/index.mjs';
 
-const apiKey = process.env.CEREBRAS_API_KEY
+const apiKey = process.env.CEREBRAS_API_KEY || ""
 
 const client = new Cerebras({ apiKey });
 

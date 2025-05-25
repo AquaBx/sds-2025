@@ -1,4 +1,4 @@
-import { Agent } from '$lib/agent';
+import { Agent } from '$lib/Agent';
 import type { Actions, Load } from '@sveltejs/kit';
 import PocketBase from 'pocketbase';
 

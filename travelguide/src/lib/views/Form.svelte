@@ -19,7 +19,7 @@
 >
 	<h2 class="bold text-xl">Where do you want to go ?</h2>
 	<div class="w-full">
-		<Select.Root type="single" name="city" bind:value={guideFormdata.destination.id}>
+		<Select.Root class="w-full" type="single" name="city" bind:value={guideFormdata.destination.id}>
 			<Select.Trigger>
 				{guideFormdata.destination.name}
 			</Select.Trigger>
