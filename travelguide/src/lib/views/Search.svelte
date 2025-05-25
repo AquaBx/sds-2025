@@ -24,7 +24,7 @@
 
 	{#each searchFormdata.tags as tag}
 		<label for={tag.id}>
-			<Checkbox id={tag.id} bind:checked={tag.selected} name="tags" />
+			<Checkbox id={tag.id} bind:checked={tag.selected} value={tag.id} name="tags" />
 			{tag.text}
 		</label>
 	{/each}

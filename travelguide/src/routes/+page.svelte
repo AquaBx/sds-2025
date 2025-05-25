@@ -60,6 +60,17 @@
 				</ScrollArea>
 				<Button onclick={() => (config.hasSearched = false)}>Cancel</Button>
 			</div>
+		{:else if config.hasItinerate}
+			<div in:fly out:fly class="h-full flex-col flex">
+				<ScrollArea class="flex-1">
+					{#each config.itinerary as activity}
+						<PlaceCard place={activity}></PlaceCard>
+						{activity.startingTime}
+						{activity.endingTime}
+					{/each}
+				</ScrollArea>
+				<Button onclick={() => (config.hasItinerate = false)}>Cancel</Button>
+			</div>
 		{:else}
 			<Tabs.Root bind:value={tab}>
 				<Tabs.List>
