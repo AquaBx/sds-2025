@@ -16,12 +16,12 @@ export const actions: Actions = {
         const formData = await event.request.formData();
         console.log(formData)
 
-        const interests = (formData.get("tags") || "").split(",")
-        const budget = formData.get("budget")!
-        const currency = formData.get("currency")!
-        const startDate = formData.get("startDate")!
-        const endDate = formData.get("endDate")!
-        const disability = formData.get("disability") == "on"
+        const interests = String(formData.get("tags") || "").split(",");
+        const budget = formData.get("budget")!;
+        const currency = formData.get("currency")!;
+        const startDate = formData.get("startDate")!;
+        const endDate = formData.get("endDate")!;
+        const disability = formData.get("disability") == "on";
         const city = formData.get("city")!
 
         const activities = await pb.collection('activities').getFullList({
@@ -35,35 +35,88 @@ export const actions: Actions = {
         agent1.provideData("Filtered activites available", activities)
         const response1 = await agent1.call()
 
-        const agent2 = new Agent("Organize the activities by day, including meal breaks and accommodations. Ensure the schedule accounts for timings, distances, overall feasibility, and that the total cost does not exceed the provided budget.", [["id", "number (id of the activity)"], ["startingTime", "Date (ISO 8601 format)"], ["endingTime", "Date (ISO 8601 format)"]])
-        agent2.provideData("Activities grouped by geographical areas", response1)
-        agent2.provideData("Start of stay", startDate)
-        agent2.provideData("End of stay", endDate)
-        agent2.provideData("Budget", `${budget} ${currency}` as unknown as object)
-        const response2 = await agent2.call()
+        // Nouvelle logique : requête par journée
+        function getDaysArray(start: string, end: string): Date[] {
+            const arr: Date[] = [];
+            let dt = new Date(start);
+            while (dt <= new Date(end)) {
+                arr.push(new Date(dt));
+                dt.setDate(dt.getDate() + 1);
+            }
+            return arr;
+        }
 
-        const locations = await pb.collection('activities').getFullList({
-            filter: response2.map(k => `id = '${k.id}'`).join('||')
-        });
+        let remainingActivities: any[] = [...response1];
+        let itinerary: any[] = [];
+        const days = getDaysArray(startDate as string, endDate as string);
+        for (const day of days) {
+            if (remainingActivities.length === 0) break;
+            const agent2 = new Agent("Organize the activities by day, including meal breaks and accommodations. Ensure the schedule accounts for timings, distances, overall feasibility, and that the total cost does not exceed the provided budget.", [["id", "number (id of the activity)"], ["startingTime", "Date (ISO 8601 format)"], ["endingTime", "Date (ISO 8601 format)"]])
+            agent2.provideData("Activities grouped by geographical areas", remainingActivities)
+            agent2.provideData("Date of the day", { date: day.toISOString().split('T')[0] })
+            agent2.provideData("Budget", `${budget} ${currency}` as unknown as object)
+            const responseDay: any[] = await agent2.call();
 
-        const itinerary = response2.map(it => {
-            const location = locations.find(loc => loc.id === it.id);
-            location.picture = `${process.env.DATABASE}/api/files/activities/${location.id}/${location.picture}`
-            return {
-                ...it,
-                ...location
-            };
-        });
+            const locations = await pb.collection('activities').getFullList({
+                filter: responseDay.map((k: any) => `id = '${k.id}'`).join('||')
+            });
+
+            const dayActivityIds = responseDay.map((a: any) => a.id);
+            const dayActivities = remainingActivities.filter((a: any) => dayActivityIds.includes(a.id));
+
+            let coordinates = locations.map(c =>[c.location.lon,c.location.lat])
+            console.log(coordinates)
+
+            let route = null;
+            if (coordinates.length > 1) {
+                try {
+                    const orsRes = await fetch('https://api.openrouteservice.org/v2/directions/driving-car', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json; charset=utf-8',
+                            'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                            'Authorization': process.env.ORS_API_KEY as string
+                        },
+                        body: JSON.stringify({ coordinates })
+                    });
+                    console.log(orsRes)
+                    if (orsRes.ok) {
+                        route = await orsRes.json();
+                    } else {
+                        route = null;
+                    }
+                } catch (e) {
+                    route = null;
+                }
+            }
+            console.log(route)
+
+            const selectedIds = responseDay.map((a: any) => a.id);
+            remainingActivities = remainingActivities.filter((a: any) => !selectedIds.includes(a.id));
+
+            const dayitinerary = responseDay.map((it: any) => {
+                const location = locations.find((loc: any) => loc.id === it.id);
+                if (location) {
+                    location.picture = `${process.env.DATABASE}/api/files/activities/${location.id}/${location.picture}`
+                    return {
+                        ...it,
+                        ...location,
+                    };
+                }
+                return it;
+            });
+            itinerary.push({itinerary:dayitinerary,route})
+        }
 
         return { itinerary };
     },
 
     search: async (event) => {
         const formData = await event.request.formData();
-        const interests = (formData.get("tags") || "").split(",")
-        const search = (formData.get("search") || "")
-        const hourRange = (formData.get("hourRange") || "00,24").split(",").map(h => h.length === 1 ? `0${h}` : h);
-        const maxPrice = (formData.get("maxPrice") || 1000)
+        const interests = String(formData.get("tags") || "").split(",");
+        const search = String(formData.get("search") || "");
+        const hourRange = String(formData.get("hourRange") || "00,24").split(",").map((h: string) => h.length === 1 ? `0${h}` : h);
+        const maxPrice = formData.get("maxPrice") || 1000
 
         const activities = await pb.collection('activities').getFullList({
             filter: `(${interests.map(tag => `tags?~'${tag}'`).join('||')})&&(description~'${search}'||name~'${search}')&&(price<${maxPrice})&&(openingTime<=${hourRange[0]})&&(closingTime>=${hourRange[1]})`
