@@ -10,10 +10,17 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { fly } from 'svelte/transition';
 	import { toast } from 'svelte-sonner';
+	import { pb } from '$lib/pocketbase';
+	import { goto } from '$app/navigation';
 
 	let { data } = $props();
 
 	loadData(data);
+
+	const logout = () => {
+		pb.authStore.clear();
+		goto('/auth');
+	};
 
 	let mounted = $state(false);
 	let mapDiv: HTMLDivElement;
@@ -48,6 +55,32 @@
 </script>
 
 {#if mounted}
+	<div
+	class="absolute top-4 right-4 z-20 border border-border backdrop-blur-md bg-background/30 dark:bg-background/20 shadow-md rounded-xl p-4 flex flex-col gap-2 w-48"
+>
+	<h2 class="text-lg font-semibold">Account</h2>
+
+	<!-- My Account -->
+	<button
+		on:click={() => goto('/account')}
+		class="inline-flex items-center justify-center rounded-md text-sm font-medium
+		       bg-secondary hover:bg-secondary/80 text-secondary-foreground px-4 py-2 transition"
+	>
+		My Account
+	</button>
+
+	<!-- Logout -->
+	<button
+		on:click={() => {
+			pb.authStore.clear();
+			goto('/auth');
+		}}
+		class="inline-flex items-center justify-center rounded-md text-sm font-medium
+		       bg-destructive hover:bg-destructive/90 text-white px-4 py-2 transition"
+	>
+		Logout
+	</button>
+</div>
 	<nav
 		class="inset-x-4 bottom-4 md:inset-x-unset md:inset-y-4 md:left-4 md:max-w-md absolute z-10 rounded-2xl bg-background/15 p-8 flex flex-col gap-4 backdrop-blur-sm border-border border-2"
 	>
