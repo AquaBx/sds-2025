@@ -20,8 +20,11 @@
 
 	$effect(() => {
 		MapManager.markersReset();
+		MapManager.layersReset();
 
 		MapManager.markers = config.activities.map((place) => MapManager.createMarker(place));
+		MapManager.createRoute(config.itinerary.map((day) => day.route));
+
 		if (MapManager.map) {
 			let mobile = window.screen.availWidth < 500;
 			let left = mobile ? 50 : 500;
@@ -53,7 +56,7 @@
 	>
 		{#if config.hasSearched}
 			<div in:fly out:fly class="h-full flex-col flex gap-2">
-				<ScrollArea class="flex-1 h-1/2">
+				<ScrollArea class="flex-1 h-1/2 flex flex-col gap-1">
 					{#each config.activities as activity}
 						<PlaceCard place={activity}></PlaceCard>
 					{/each}
@@ -61,15 +64,27 @@
 				<Button onclick={() => (config.hasSearched = false)}>Cancel</Button>
 			</div>
 		{:else if config.hasItinerate}
-			<div in:fly out:fly class="h-full flex-col flex gap-2">
-				<ScrollArea class="flex-1 h-1/2">
-					{#each config.itinerary as activity}
-						<PlaceCard place={activity}></PlaceCard>
-						{activity.startingTime}
-						{activity.endingTime}
+			<div in:fly out:fly class="h-full flex flex-col gap-2">
+				<Tabs.Root value="day-0" class="flex-1 overflow-auto">
+					<Tabs.List>
+						{#each config.itinerary as day, i}
+							<Tabs.Trigger value="day-{i}">Day {i}</Tabs.Trigger>
+						{/each}
+					</Tabs.List>
+					{#each config.itinerary as day, i}
+						<Tabs.Content value="day-{i}" class="h-full">
+							<ScrollArea class="flex-1 flex flex-col gap-1">
+								{#each day.itinerary as activity}
+									<PlaceCard place={activity}></PlaceCard>
+									{activity.startingTime}
+									{activity.endingTime}
+								{/each}
+							</ScrollArea>
+						</Tabs.Content>
 					{/each}
-				</ScrollArea>
-				<Button onclick={() => (config.hasItinerate = false)}>Cancel</Button>
+				</Tabs.Root>
+
+				<Button class="mt-2" onclick={() => (config.hasItinerate = false)}>Cancel</Button>
 			</div>
 		{:else}
 			<Tabs.Root bind:value={tab}>
