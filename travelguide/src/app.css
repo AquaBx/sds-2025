@@ -108,3 +108,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+.mypopup .maplibregl-popup-content {
+  @apply bg-card
+}
+.mypopup .maplibregl-popup-tip {
+  @apply border-t-card
+}
