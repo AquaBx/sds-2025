@@ -9,7 +9,7 @@
 	let password = '';
 	let error = '';
 	let mounted = false;
-  let pb: PocketBase;
+  	let pb: PocketBase;
 
 	onMount(() => {
    		pb = new PocketBase('https://pocketbase.oracle.aquabx.ovh');
