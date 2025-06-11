@@ -10,8 +10,7 @@ export namespace MapManager {
     export let markers: maplibre.Marker[] = []
     export let bounds = new maplibre.LngLatBounds();
     export let route = []
-    let layers = []
-
+    export let layers = []
 
     export function init(mapDiv: HTMLDivElement) {
         map = new maplibre.Map({
@@ -51,11 +50,6 @@ export namespace MapManager {
             console.error('Routes must contain at least one FeatureCollection of LineString features.');
             return;
         }
-
-        // if (map.getSource('route')) {
-        //     map.removeLayer('route');
-        //     map.removeSource('route');
-        // }
 
         routes.forEach((route, index) => {
             if (route.features.length === 0) {
@@ -115,6 +109,17 @@ export namespace MapManager {
         MapManager.markers.forEach((m) => m.remove());
         MapManager.markers = []
         bounds = new maplibre.LngLatBounds();
+    }
+
+    export function layersReset() {
+        layers.forEach((layer) => {
+            if (map.getLayer(layer.id)) {
+                map.removeLayer(layer.id);
+            }
+            if (map.getSource(layer.source)) {
+                map.removeSource(layer.source);
+            }
+        });
     }
 
     function changelayer(event) {

@@ -14,7 +14,6 @@ export const load: Load = async () => {
 export const actions: Actions = {
     guide: async (event) => {
         const formData = await event.request.formData();
-        console.log(formData)
 
         const interests = String(formData.get("tags") || "").split(",");
         const budget = formData.get("budget")!;
@@ -28,14 +27,10 @@ export const actions: Actions = {
             filter: `(${interests.map(tag => `tags?~'${tag}'`).join('||')})&&(city='${city}')${disability ? "" : "&&(disableAccessibility=True)"}`,
         });
 
-        const agent1 = new Agent("Group activities by geographical areas, ensuring they align with the number of days the person will stay. Optimize for convenience and logical flow.", [["id", "number (id of the activity)"], ["duration", "number (activity duration in hour)"]])
-        agent1.provideData("Filtered activites available", activities)
-        agent1.provideData("Start of stay", startDate)
-        agent1.provideData("End of stay", endDate)
-        agent1.provideData("Filtered activites available", activities)
-        const response1 = await agent1.call()
+        const restaurant_hotels = await pb.collection('activities').getFullList({
+            filter: `type.text = "Restaurant" || type.text = "Hotel"`,
+        });
 
-        // Nouvelle logique : requête par journée
         function getDaysArray(start: string, end: string): Date[] {
             const arr: Date[] = [];
             let dt = new Date(start);
@@ -46,13 +41,15 @@ export const actions: Actions = {
             return arr;
         }
 
-        let remainingActivities: any[] = [...response1];
+        let remainingActivities: any[] = [...activities];
         let itinerary: any[] = [];
         const days = getDaysArray(startDate as string, endDate as string);
+
         for (const day of days) {
             if (remainingActivities.length === 0) break;
-            const agent2 = new Agent("Organize the activities by day, including meal breaks and accommodations. Ensure the schedule accounts for timings, distances, overall feasibility, and that the total cost does not exceed the provided budget.", [["id", "number (id of the activity)"], ["startingTime", "Date (ISO 8601 format)"], ["endingTime", "Date (ISO 8601 format)"]])
-            agent2.provideData("Activities grouped by geographical areas", remainingActivities)
+            const agent2 = new Agent("Organize the activities by day, ensuring there is at least one activity in the morning and one in the evening. Include meals and accommodations. Ensure the schedule accounts for timings, distances, overall feasibility, and that the total cost does not exceed the provided budget. Additionally, select appropriate restaurants and hotels for the day.", [["id", "number (id of the activity)"], ["startingTime", "Date (ISO 8601 format)"], ["endingTime", "Date (ISO 8601 format)"]])
+            agent2.provideData("Meals and accommodations", restaurant_hotels)
+            agent2.provideData("Activities", remainingActivities)
             agent2.provideData("Date of the day", { date: day.toISOString().split('T')[0] })
             agent2.provideData("Budget", `${budget} ${currency}` as unknown as object)
             const responseDay: any[] = await agent2.call();
@@ -60,9 +57,6 @@ export const actions: Actions = {
             const locations = await pb.collection('activities').getFullList({
                 filter: responseDay.map((k: any) => `id = '${k.id}'`).join('||')
             });
-
-            const dayActivityIds = responseDay.map((a: any) => a.id);
-            const dayActivities = remainingActivities.filter((a: any) => dayActivityIds.includes(a.id));
 
             let coordinates = locations.map(c => [c.location.lat, c.location.lon])
 
