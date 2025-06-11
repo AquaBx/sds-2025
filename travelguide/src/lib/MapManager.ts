@@ -9,6 +9,8 @@ export namespace MapManager {
     let popup: maplibre.Popup;
     export let markers: maplibre.Marker[] = []
     export let bounds = new maplibre.LngLatBounds();
+    export let route = []
+    export let layers = []
 
     export function init(mapDiv: HTMLDivElement) {
         map = new maplibre.Map({
@@ -18,14 +20,9 @@ export namespace MapManager {
             zoom: 1 // starting zoom
         });
 
-        const query = window.matchMedia('(prefers-color-scheme: dark)')
-        changelayer(query)
-
-        map.on('idle', () => {
-            const query = window.matchMedia('(prefers-color-scheme: dark)')
-            changelayer(query)
-            query.addEventListener('change', changelayer);
-        })
+        const query = window.matchMedia('(prefers-color-scheme: dark)');
+        changelayer(query);
+        query.addEventListener('change', changelayer);
 
         const componentDom = document.createElement('div');
         mount(MarkerPopup, {
@@ -47,6 +44,66 @@ export namespace MapManager {
 
         return marker
     }
+    export function createRoute(routes: GeoJSON.FeatureCollection<GeoJSON.LineString>[]) {
+        if (!routes || routes.length === 0) {
+            console.log(routes)
+            console.error('Routes must contain at least one FeatureCollection of LineString features.');
+            return;
+        }
+
+        routes.forEach((route, index) => {
+            if (route.features.length === 0) {
+                console.warn('Skipping empty FeatureCollection.');
+                return;
+            }
+
+            const routeSourceId = `route-${index}`;
+            const routeLayerId = `route-layer-${index}`;
+
+            route.features.forEach((feature) => {
+                if (feature.geometry.type === 'LineString') {
+                    feature.geometry.coordinates.forEach(([lon, lat]) => {
+                        bounds.extend([lon, lat]);
+                    });
+                }
+            });
+
+            map.addSource(routeSourceId, {
+                type: 'geojson',
+                data: route
+            });
+
+            const color = generateDistinctColor(index);
+
+            let layer = {
+                id: routeLayerId,
+                type: 'line',
+                source: routeSourceId,
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': color,
+                    'line-width': 4
+                }
+            }
+
+            layers.push(layer)
+            map.addLayer(layer);
+
+        });
+    }
+
+    function generateDistinctColor(index: number): string {
+        const colors = [
+            '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231',
+            '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe',
+            '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000',
+            '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080'
+        ];
+        return colors[index % colors.length];
+    }
 
     export function markersReset() {
         MapManager.markers.forEach((m) => m.remove());
@@ -54,8 +111,23 @@ export namespace MapManager {
         bounds = new maplibre.LngLatBounds();
     }
 
+    export function layersReset() {
+        layers.forEach((layer) => {
+            if (map.getLayer(layer.id)) {
+                map.removeLayer(layer.id);
+            }
+            if (map.getSource(layer.source)) {
+                map.removeSource(layer.source);
+            }
+        });
+    }
+
     function changelayer(event) {
         const layer = event.matches ? "dark-matter-gl-style" : "positron-gl-style"
         map.setStyle(`https://tiles.basemaps.cartocdn.com/gl/${layer}/style.json`)
+
+        layers.forEach((l) => {
+            map.addLayer(l);
+        })
     }
 }
