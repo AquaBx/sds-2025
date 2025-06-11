@@ -1,0 +1,24 @@
+meta {
+  name: routes
+  type: http
+  seq: 4
+}
+
+post {
+  url: https://api.openrouteservice.org/v2/directions/foot-walking/geojson
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: 
+}
+
+body:json {
+  {"coordinates":[
+  
+    [  16.936226183638986,52.42181157337839 ], [  16.897726624116444 ,52.42353375464525], [ 16.902103595279033 ,52.39952524935378], [  16.917075791577815,52.409174364254156 ], [  16.95628347014414,52.38487314641086 ]
+  
+  ]}
+  
+}
