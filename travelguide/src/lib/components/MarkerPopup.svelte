@@ -1,11 +1,17 @@
-<script>
-	let { initial = 0 } = $props()
-	let count = $state(initial)
+<script lang="ts">
+	import * as Card from '$lib/components/ui/card/index.js';
+
+	import { MapManager } from '$lib/MapManager';
+
+	let place = MapManager.selected_place;
 </script>
 
-intial: {initial}<br>
 <div>
-	<button onclick={() => count--}>-</button>
-	<span>{count}</span>
-	<button onclick={() => count++}>+</button>
+	<h3 class="text-card-foreground text-lg font-semibold">
+		{#if $place}
+			{$place.name}
+		{:else}
+			No place selected
+		{/if}
+	</h3>
 </div>

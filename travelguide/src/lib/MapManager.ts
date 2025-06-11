@@ -2,6 +2,7 @@ import maplibre from 'maplibre-gl';
 import { mount } from 'svelte';
 import Marker from '$lib/components/Marker.svelte';
 import MarkerPopup from '$lib/components/MarkerPopup.svelte';
+import { writable } from 'svelte/store';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace MapManager {
@@ -11,6 +12,7 @@ export namespace MapManager {
     export let bounds = new maplibre.LngLatBounds();
     export let route = []
     export let layers = []
+    export let selected_place = writable(null)
 
     export function init(mapDiv: HTMLDivElement) {
         map = new maplibre.Map({
@@ -27,10 +29,10 @@ export namespace MapManager {
         const componentDom = document.createElement('div');
         mount(MarkerPopup, {
             target: componentDom,
-            props: { initial: 13 }
+            props: {}
         });
 
-        popup = new maplibre.Popup({ offset: 25 }).setDOMContent(componentDom);
+        popup = new maplibre.Popup({ offset: 25, className:"mypopup"}).setDOMContent(componentDom);
     }
 
     export function createMarker(place: Place) {
@@ -39,6 +41,10 @@ export namespace MapManager {
         markers.push(marker);
         marker.setPopup(popup);
         marker.addTo(map);
+
+        marker.getElement().addEventListener("click", () => {
+            selected_place.set(place);
+        });
 
         bounds.extend([place.location.lat, place.location.lon]);
 
