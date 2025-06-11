@@ -64,13 +64,12 @@ export const actions: Actions = {
             const dayActivityIds = responseDay.map((a: any) => a.id);
             const dayActivities = remainingActivities.filter((a: any) => dayActivityIds.includes(a.id));
 
-            let coordinates = locations.map(c =>[c.location.lon,c.location.lat])
-            console.log(coordinates)
+            let coordinates = locations.map(c => [c.location.lat, c.location.lon])
 
             let route = null;
             if (coordinates.length > 1) {
                 try {
-                    const orsRes = await fetch('https://api.openrouteservice.org/v2/directions/driving-car', {
+                    const orsRes = await fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json; charset=utf-8',
@@ -79,17 +78,26 @@ export const actions: Actions = {
                         },
                         body: JSON.stringify({ coordinates })
                     });
-                    console.log(orsRes)
                     if (orsRes.ok) {
                         route = await orsRes.json();
                     } else {
-                        route = null;
+                        throw "null"
                     }
                 } catch (e) {
-                    route = null;
+                    console.log("erreur")
+                    console.log(coordinates)
+                    console.log(fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json; charset=utf-8',
+                            'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                            'Authorization': process.env.ORS_API_KEY as string
+                        },
+                        body: JSON.stringify({ coordinates })
+                    }))
+                    throw e
                 }
             }
-            console.log(route)
 
             const selectedIds = responseDay.map((a: any) => a.id);
             remainingActivities = remainingActivities.filter((a: any) => !selectedIds.includes(a.id));
@@ -105,7 +113,7 @@ export const actions: Actions = {
                 }
                 return it;
             });
-            itinerary.push({itinerary:dayitinerary,route})
+            itinerary.push({ itinerary: dayitinerary, route })
         }
 
         return { itinerary };

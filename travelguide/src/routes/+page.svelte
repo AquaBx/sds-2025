@@ -19,9 +19,12 @@
 	let mapDiv: HTMLDivElement;
 
 	$effect(() => {
+		console.log(1);
 		MapManager.markersReset();
 
 		MapManager.markers = config.activities.map((place) => MapManager.createMarker(place));
+		MapManager.createRoute(config.itinerary.map((day) => day.route));
+
 		if (MapManager.map) {
 			let mobile = window.screen.availWidth < 500;
 			let left = mobile ? 50 : 500;
@@ -63,10 +66,15 @@
 		{:else if config.hasItinerate}
 			<div in:fly out:fly class="h-full flex-col flex gap-2">
 				<ScrollArea class="flex-1 h-1/2">
-					{#each config.itinerary as activity}
-						<PlaceCard place={activity}></PlaceCard>
-						{activity.startingTime}
-						{activity.endingTime}
+					{#each config.itinerary as day}
+						<h2>{day}</h2>
+						<div>
+							{#each day.itinerary as activity}
+								<PlaceCard place={activity}></PlaceCard>
+								{activity.startingTime}
+								{activity.endingTime}
+							{/each}
+						</div>
 					{/each}
 				</ScrollArea>
 				<Button onclick={() => (config.hasItinerate = false)}>Cancel</Button>
