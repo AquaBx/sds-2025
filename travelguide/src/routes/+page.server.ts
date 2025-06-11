@@ -63,7 +63,7 @@ export const actions: Actions = {
             let route = null;
             if (coordinates.length > 1) {
                 try {
-                    const orsRes = await fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+                    const orsRes = await fetch('https://api.openrouteservice.org/v2/directions/foot-walking/geojson', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json; charset=utf-8',
@@ -80,7 +80,7 @@ export const actions: Actions = {
                 } catch (e) {
                     console.log("erreur")
                     console.log(coordinates)
-                    console.log(fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+                    console.log(fetch('https://api.openrouteservice.org/v2/directions/foot-walking/geojson', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json; charset=utf-8',
