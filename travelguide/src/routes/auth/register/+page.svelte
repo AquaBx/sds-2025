@@ -11,7 +11,7 @@
 	let passwordConfirm = '';
 	let error = '';
 	let mounted = false;
-  let pb: PocketBase;
+  	let pb: PocketBase;
 
 	onMount(() => {
     	pb = new PocketBase('https://pocketbase.oracle.aquabx.ovh');
@@ -24,12 +24,13 @@
 				email,
 				emailVisibility: true,
 				name,
+				role: "user",
 				password,
 				passwordConfirm
 			};
 			await pb.collection('users').create(userData);
 			await pb.collection('users').authWithPassword(email, password);
-			goto('/');
+			window.location.href = '/';
 		} catch (err) {
 			console.error('Register error:', err);
 			if (err?.response?.data) {
@@ -60,17 +61,26 @@
 
 			<Label for="confirm">Confirm Password</Label>
 			<Input id="confirm" bind:value={passwordConfirm} type="password" placeholder="Repeat password" />
-
-			<button
-        on:click={register}
-        class="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap
-              rounded-md text-sm font-medium outline-none transition-all
-              focus-visible:ring-[3px] focus-visible:border-ring focus-visible:ring-ring/50
-              bg-primary text-primary-foreground shadow-xs hover:bg-primary/90
-              h-9 px-4 py-2"
-      >
-        Register
-      </button>
+			<div class="w-full flex justify-between items-center mt-4">
+				<button
+					on:click={register}
+					class="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap
+						rounded-md text-sm font-medium outline-none transition-all
+						focus-visible:ring-[3px] focus-visible:border-ring focus-visible:ring-ring/50
+						bg-primary text-primary-foreground shadow-xs hover:bg-primary/90
+						h-9 px-4 py-2"
+				>
+					Register
+				</button>
+				<div class="w-full flex justify-end mt-2">
+					<button
+						on:click={() => goto('/auth')}
+						class="text-sm text-muted-foreground hover:underline"
+					>
+						← Back
+					</button>
+				</div>
+			</div>
 		</div>
 	</div>
 {:else}
