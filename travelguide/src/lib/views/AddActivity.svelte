@@ -24,57 +24,72 @@
     let currency: string = 'EUR';
     let estimateDuration: number | '' = '';
     let disableAccesibility: boolean = false;
-    let tags: string[] = [];
+    guideFormdata.tags = guideFormdata.tags.map(tag => ({
+        ...tag,
+        selected: false
+    }));
 
     async function submitForm() {
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('description', description);
-        formData.append('address', address);
-        formData.append('city', city);
-        formData.append('openingTime', openingTime);
-        formData.append('closingTime', closingTime);
-        // ...autres champs...
-        tags.forEach(tag => formData.append('tags', tag));
-        if (picture) formData.append('picture', picture);
+        // const formData = new FormData();
+        // formData.append('name', name);
+        // formData.append('description', description);
+        // formData.append('address', address);
+        // formData.append('city', city);
+        // formData.append('openingTime', openingTime);
+        // formData.append('closingTime', closingTime);
+        // // ...autres champs...
+        // tags.forEach(tag => formData.append('tags', tag));
+        // if (picture) formData.append('picture', picture);
 
-        // Envoi vers ton backend (exemple avec fetch)
-        await fetch('/api/activities', {
-            method: 'POST',
-            body: formData
-        });
-}
+        // // Envoi vers ton backend (exemple avec fetch)
+        // await fetch('/api/activities', {
+        //     method: 'POST',
+        //     body: formData
+        // });
+        console.log('Name:', name);
+        console.log('Description:', description);
+        console.log('Address:', address);
+        console.log('City:', city);
+        console.log('Opening Time:', openingTime);
+        console.log('Closing Time:', closingTime);
+        console.log('Price:', price);
+        console.log('Currency:', currency);
+        console.log('Estimated Duration:', estimateDuration);
+        console.log('Accessible for disabled:', disableAccesibility);
+        const selectedTagTexts = guideFormdata.tags.filter(tag => tag.selected).map(tag => tag.text);
+        console.log(selectedTagTexts);
+        console.log('Picture:', picture);
+    }
 </script>
 
 <form
-	class="flex flex-col gap-4 items-center w-full max-h-[90vh] overflow-y-auto p-4"
-	use:enhance={handler}
+	class="flex flex-col gap-4 items-center w-full max-h-[85vh] overflow-y-auto p-4"
+    on:submit|preventDefault={submitForm}
 	method="post"
-	action="?/guide"
 >
 	<h2 class="bold text-xl">Add a new activity</h2>
 
 	<Separator class="my-2" />
     <h2 class="bold text-xl">Name</h2>
     <div class="flex gap-2 w-full">
-		<Input name="name" class="" type="String" bind:value={name}></Input>
+		<Input name="name" class="" type="String" bind:value={name} required></Input>
     </div>
 
     <h2 class="bold text-xl">Description</h2>
     <div class="flex gap-2 w-full">
-		<Input name="description" class="" type="String" bind:value={description}></Input>
+		<Input name="description" class="" type="String" bind:value={description} required></Input>
     </div>
 
 	<Separator class="my-2" />
     <h2 class="bold text-xl">Address</h2>
     <div class="flex gap-2 w-full">
-		<Input name="address" class="" type="String" bind:value={address}></Input>
+		<Input name="address" class="" type="String" bind:value={address} required></Input>
     </div>
 
     <Separator class="my-2" />
     <h2 class="bold text-xl">City</h2>
     <div class="flex gap-2 w-full">
-		<Input name="city" class="" type="String" bind:value={city}></Input>
+		<Input name="city" class="" type="String" bind:value={city} required></Input>
     </div>
 
     <Separator class="my-2" />
@@ -122,7 +137,7 @@
     <Separator class="my-2" />
     <h2 class="bold text-xl">How much does it cost?</h2>
     <div class="flex gap-2 w-full">
-		<Input name="price" class="" type="number" bind:value={price}></Input>
+		<Input name="price" class="" type="number" bind:value={price} required></Input>
 		<Select.Root type="single" name="currency" bind:value={currency}>
 			<Select.Trigger class="w-[180px]">
 				{currency}
@@ -138,7 +153,7 @@
     <Separator class="my-2" />
     <h2 class="bold text-xl">Duration</h2>
     <div class="flex gap-2 w-full">
-		<Input name="duration" class="" type="number" bind:value={estimateDuration}></Input>
+		<Input name="duration" class="" type="number" bind:value={estimateDuration} required></Input>
     </div>
 
     <Separator class="my-2" />
@@ -151,28 +166,21 @@
 
     <Separator class="my-2" />
 	<h2 class="bold text-xl">Which themes best match this activity?</h2>
-	<div class="flex gap-2 w-full justify-center flex-wrap">
-        {#each guideFormdata.tags as tagObj}
-            <label for={tagObj.id}>
+    <div class="flex gap-2 w-full justify-center flex-wrap">
+        {#each guideFormdata.tags as tag}
+            <label for={tag.id}>
                 <input
                     type="checkbox"
                     class="hidden"
                     name="tags"
-                    value={tagObj.id}
-                    id={tagObj.id}
-                    checked={tags.includes(tagObj.id)}
-                    on:change={() => {
-                        if (tags.includes(tagObj.id)) {
-                            tags = tags.filter(t => t !== tagObj.id);
-                        } else {
-                            tags = [...tags, tagObj.id];
-                        }
-                    }}
+                    bind:checked={tag.selected}
+                    value={tag.id}
+                    id={tag.id}
                 />
-                <Toggle pressed={tags.includes(tagObj.id)}>{tagObj.text}</Toggle>
+                <Toggle bind:pressed={tag.selected}>{tag.text}</Toggle>
             </label>
         {/each}
     </div>
-
-	<Button type="submit">Add activity</Button>
+    
+    <Button type="submit">Add activity</Button>
 </form>
