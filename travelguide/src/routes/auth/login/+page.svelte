@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import PocketBase from 'pocketbase';
-	import Input from '$lib/components/ui/input/input.svelte';
 	import { goto } from '$app/navigation';
+	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
 
 	let email = '';
@@ -26,10 +26,10 @@
 		}
 	};
 </script>
-
 {#if mounted}
 	<div class="min-h-screen flex flex-col items-center justify-center p-8">
 		<div class="w-full max-w-sm space-y-4">
+
 				<h1 class="text-2xl font-bold">Login</h1>
 				{#if error}<p class="text-red-500 text-sm">{error}</p>{/if}
 				<Label for="email">Email</Label>

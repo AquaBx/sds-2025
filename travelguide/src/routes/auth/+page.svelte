@@ -5,6 +5,7 @@
 <div class="min-h-screen flex flex-col items-center justify-center gap-4 p-8 text-center">
 	<h1 class="text-3xl font-bold">Welcome</h1>
 	<p>Please log in or register to continue</p>
+
   <div class="w-[220px] flex flex-col items-center gap-4">
     <div class="flex gap-4">
       <button
