@@ -131,5 +131,5 @@ export const actions: Actions = {
         return {
             activities
         }
-    }
+    },
 }
