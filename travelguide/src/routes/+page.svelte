@@ -11,7 +11,6 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { fly } from 'svelte/transition';
 	import { toast } from 'svelte-sonner';
-	import { pb } from '$lib/pocketbase';
 	import AddActivity from '$lib/views/AddActivity.svelte';
 	import { goto } from '$app/navigation';
 
