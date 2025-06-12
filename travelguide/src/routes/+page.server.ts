@@ -14,56 +14,111 @@ export const load: Load = async () => {
 export const actions: Actions = {
     guide: async (event) => {
         const formData = await event.request.formData();
-        console.log(formData)
 
-        const interests = (formData.get("tags") || "").split(",")
-        const budget = formData.get("budget")!
-        const currency = formData.get("currency")!
-        const startDate = formData.get("startDate")!
-        const endDate = formData.get("endDate")!
-        const disability = formData.get("disability") == "on"
+        const interests = String(formData.get("tags") || "").split(",");
+        const budget = formData.get("budget")!;
+        const currency = formData.get("currency")!;
+        const startDate = formData.get("startDate")!;
+        const endDate = formData.get("endDate")!;
+        const disability = formData.get("disability") == "on";
         const city = formData.get("city")!
 
         const activities = await pb.collection('activities').getFullList({
             filter: `(${interests.map(tag => `tags?~'${tag}'`).join('||')})&&(city='${city}')${disability ? "" : "&&(disableAccessibility=True)"}`,
         });
 
-        const agent1 = new Agent("Group activities by geographical areas, ensuring they align with the number of days the person will stay. Optimize for convenience and logical flow.", [["id", "number (id of the activity)"], ["duration", "number (activity duration in hour)"]])
-        agent1.provideData("Filtered activites available", activities)
-        agent1.provideData("Start of stay", startDate)
-        agent1.provideData("End of stay", endDate)
-        agent1.provideData("Filtered activites available", activities)
-        const response1 = await agent1.call()
-
-        const agent2 = new Agent("Organize the activities by day, including meal breaks and accommodations. Ensure the schedule accounts for timings, distances, overall feasibility, and that the total cost does not exceed the provided budget.", [["id", "number (id of the activity)"], ["startingTime", "Date (ISO 8601 format)"], ["endingTime", "Date (ISO 8601 format)"]])
-        agent2.provideData("Activities grouped by geographical areas", response1)
-        agent2.provideData("Start of stay", startDate)
-        agent2.provideData("End of stay", endDate)
-        agent2.provideData("Budget", `${budget} ${currency}` as unknown as object)
-        const response2 = await agent2.call()
-
-        const locations = await pb.collection('activities').getFullList({
-            filter: response2.map(k => `id = '${k.id}'`).join('||')
+        const restaurant_hotels = await pb.collection('activities').getFullList({
+            filter: `type.text = "Restaurant" || type.text = "Hotel"`,
         });
 
-        const itinerary = response2.map(it => {
-            const location = locations.find(loc => loc.id === it.id);
-            location.picture = `${process.env.DATABASE}/api/files/activities/${location.id}/${location.picture}`
-            return {
-                ...it,
-                ...location
-            };
-        });
+        function getDaysArray(start: string, end: string): Date[] {
+            const arr: Date[] = [];
+            let dt = new Date(start);
+            while (dt <= new Date(end)) {
+                arr.push(new Date(dt));
+                dt.setDate(dt.getDate() + 1);
+            }
+            return arr;
+        }
+
+        let remainingActivities: any[] = [...activities];
+        let itinerary: any[] = [];
+        const days = getDaysArray(startDate as string, endDate as string);
+
+        for (const day of days) {
+            if (remainingActivities.length === 0) break;
+            const agent2 = new Agent("Organize the activities by day, ensuring there is at least one activity in the morning and one in the evening. Include meals and accommodations. Ensure the schedule accounts for timings, distances, overall feasibility, and that the total cost does not exceed the provided budget. Additionally, select appropriate restaurants and hotels for the day.", [["id", "number (id of the activity)"], ["startingTime", "Date (ISO 8601 format)"], ["endingTime", "Date (ISO 8601 format)"]])
+            agent2.provideData("Meals and accommodations", restaurant_hotels)
+            agent2.provideData("Activities", remainingActivities)
+            agent2.provideData("Date of the day", { date: day.toISOString().split('T')[0] })
+            agent2.provideData("Budget", `${budget} ${currency}` as unknown as object)
+            const responseDay: any[] = await agent2.call();
+
+            const locations = await pb.collection('activities').getFullList({
+                filter: responseDay.map((k: any) => `id = '${k.id}'`).join('||')
+            });
+
+            let coordinates = locations.map(c => [c.location.lat, c.location.lon])
+
+            let route = null;
+            if (coordinates.length > 1) {
+                try {
+                    const orsRes = await fetch('https://api.openrouteservice.org/v2/directions/foot-walking/geojson', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json; charset=utf-8',
+                            'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                            'Authorization': process.env.ORS_API_KEY as string
+                        },
+                        body: JSON.stringify({ coordinates })
+                    });
+                    if (orsRes.ok) {
+                        route = await orsRes.json();
+                    } else {
+                        throw "null"
+                    }
+                } catch (e) {
+                    console.log("erreur")
+                    console.log(coordinates)
+                    console.log(fetch('https://api.openrouteservice.org/v2/directions/foot-walking/geojson', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json; charset=utf-8',
+                            'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                            'Authorization': process.env.ORS_API_KEY as string
+                        },
+                        body: JSON.stringify({ coordinates })
+                    }))
+                    throw e
+                }
+            }
+
+            const selectedIds = responseDay.map((a: any) => a.id);
+            remainingActivities = remainingActivities.filter((a: any) => !selectedIds.includes(a.id));
+
+            const dayitinerary = responseDay.map((it: any) => {
+                const location = locations.find((loc: any) => loc.id === it.id);
+                if (location) {
+                    location.picture = `${process.env.DATABASE}/api/files/activities/${location.id}/${location.picture}`
+                    return {
+                        ...it,
+                        ...location,
+                    };
+                }
+                return it;
+            });
+            itinerary.push({ itinerary: dayitinerary, route })
+        }
 
         return { itinerary };
     },
 
     search: async (event) => {
         const formData = await event.request.formData();
-        const interests = (formData.get("tags") || "").split(",")
-        const search = (formData.get("search") || "")
-        const hourRange = (formData.get("hourRange") || "00,24").split(",").map(h => h.length === 1 ? `0${h}` : h);
-        const maxPrice = (formData.get("maxPrice") || 1000)
+        const interests = String(formData.get("tags") || "").split(",");
+        const search = String(formData.get("search") || "");
+        const hourRange = String(formData.get("hourRange") || "00,24").split(",").map((h: string) => h.length === 1 ? `0${h}` : h);
+        const maxPrice = formData.get("maxPrice") || 1000
 
         const activities = await pb.collection('activities').getFullList({
             filter: `(${interests.map(tag => `tags?~'${tag}'`).join('||')})&&(description~'${search}'||name~'${search}')&&(price<${maxPrice})&&(openingTime<=${hourRange[0]})&&(closingTime>=${hourRange[1]})`
