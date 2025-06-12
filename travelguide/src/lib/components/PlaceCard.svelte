@@ -4,7 +4,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { onMount } from 'svelte';
 	import PocketBase from 'pocketbase';
-  	import * as Card from '$lib/components/ui/card/index.js';
+  import * as Card from '$lib/components/ui/card/index.js';
 	export let place: Place;
 
 	let userScore = 0;
