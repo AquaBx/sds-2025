@@ -134,7 +134,7 @@
 				<Icon src={DoorOpen} theme="solid" class="color-gray-900 size-4" />
 				<p>{place.openingTime}</p>
 			</div>
-		</div>
+		
 	</Card.Content>
 </Card.Root>
 
