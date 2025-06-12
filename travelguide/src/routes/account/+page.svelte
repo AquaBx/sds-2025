@@ -32,7 +32,7 @@
 				<!-- Possible to add more fields here -->
 			</div>
 			<button
-				on:click={() => goto('/')}
+				on:click={() => window.location.href = '/'}
 				class="inline-flex items-center justify-center w-full rounded-md text-sm font-medium
 				       bg-secondary hover:bg-secondary/80 text-secondary-foreground px-4 py-2 transition"
 			>
