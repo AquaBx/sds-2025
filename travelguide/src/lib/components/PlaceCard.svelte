@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Place } from '$lib/types';
-	import { HourglassMedium, Wheelchair, Star } from '@steeze-ui/phosphor-icons';
+	import { HourglassMedium, Wheelchair, Star, StarHalf } from '@steeze-ui/phosphor-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { onMount } from 'svelte';
 	import PocketBase from 'pocketbase';
@@ -40,11 +40,9 @@
 		
 
 		if (existingVote) {
-			console.log('Updating existing vote:', existingVote);
 			await pb.collection('votes').update(existingVote.id, { score });
 		} 
 		else {
-			console.log('No existing vote found, creating a new one');
 			const vote = {
 				"score": score,
 				"placeId": place.id,
@@ -57,7 +55,6 @@
             filter: `placeId="${place.id}"`
         });
         const avg = votes.reduce((sum, v) => sum + (v.score ?? 0), 0) /(votes.length || 1);
-
         await pb.collection('activities').update(place.id, { score: avg , votesCount: votes.length });
         place.score = avg; 
 		
@@ -92,7 +89,13 @@
 			>
 				{#if !showVote || userScore}
 					{#each Array(5) as _, i}
-						<Icon src={Star} theme="fill" class="size-4 {i < place.score ? 'text-yellow-400' : 'text-gray-300'}" />
+						{#if i + 1 <= Math.floor(place.score)}
+							<Icon src={Star} theme="fill" class="size-4 text-yellow-400" />
+						{:else if i < place.score}
+							<Icon src={StarHalf} theme="fill" class="size-4 text-yellow-400" />
+						{:else}
+							<Icon src={Star} theme="fill" class="size-4 text-gray-300" />
+						{/if}
 					{/each}
 					<span class="ml-2 text-sm text-gray-600">({place.score?.toFixed(1) ?? 'N/A'})</span>
 				{:else}
