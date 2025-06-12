@@ -2,17 +2,67 @@
 	import type { Place } from '$lib/types';
 	import { HourglassMedium, Wheelchair, Star } from '@steeze-ui/phosphor-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	import { onMount } from 'svelte';
+	import PocketBase from 'pocketbase';
+    import { goto } from '$app/navigation';
 	export let place: Place;
 	let userScore = 0;
 	let showVote = false;
 	let hoveredScore = 0;
 
-    function ratePlace(score: number) {
+	let user: any = null;
+	let pb = new PocketBase('https://pocketbase.oracle.aquabx.ovh');
+    
+    onMount(() => {
+        if (pb.authStore.isValid) {
+            user = pb.authStore.model;
+        }
+		
+    });
+
+    async function ratePlace(score: number) {
+        if (!user) {
+            goto('/auth/login');
+            return;
+        }
         userScore = score;
         showVote = false;
-        
-        console.log(`Rated place ${place.name} with ${score} stars`);
+		let existingVote: any = null;
+
+		const userId = pb.authStore.model?.id;
+
+		try{
+			existingVote = await pb.collection('votes').getFirstListItem(
+                `userId="${userId}" && placeId="${place.id}"`
+        	);
+		} catch (e) {
+        }
+		
+
+		if (existingVote) {
+			console.log('Updating existing vote:', existingVote);
+			await pb.collection('votes').update(existingVote.id, { score });
+		} 
+		else {
+			console.log('No existing vote found, creating a new one');
+			const vote = {
+				"score": score,
+				"placeId": place.id,
+				"userId": userId,
+        	};
+        	await pb.collection('votes').create(vote);
+		}
+
+        const votes = await pb.collection('votes').getFullList({
+            filter: `placeId="${place.id}"`
+        });
+        const avg = votes.reduce((sum, v) => sum + (v.score ?? 0), 0) /(votes.length || 1);
+
+        await pb.collection('activities').update(place.id, { score: avg , votesCount: votes.length });
+        place.score = avg; 
+		
     }
+
 </script>
 
 <div class="flex flex-col gap-4 rounded-lg border border-gray-300 p-4">
