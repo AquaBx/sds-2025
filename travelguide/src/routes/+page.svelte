@@ -10,6 +10,8 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { fly } from 'svelte/transition';
 	import { toast } from 'svelte-sonner';
+	import AddActivity from '$lib/views/AddActivity.svelte';
+
 
 	let { data } = $props();
 
@@ -17,6 +19,7 @@
 
 	let mounted = $state(false);
 	let mapDiv: HTMLDivElement;
+	let showAdd = false;
 
 	$effect(() => {
 		MapManager.markersReset();
@@ -45,6 +48,10 @@
 	});
 
 	let tab = $state('planner');
+
+	function handleAddActivity(event) {
+        location.reload();
+    }
 </script>
 
 {#if mounted}
@@ -76,6 +83,7 @@
 				<Tabs.List>
 					<Tabs.Trigger value="planner">Planner</Tabs.Trigger>
 					<Tabs.Trigger value="search">Search</Tabs.Trigger>
+					<Tabs.Trigger value="addActivity">Add Activity</Tabs.Trigger>
 				</Tabs.List>
 				<Tabs.Content value="planner">
 					<Form></Form>
@@ -83,8 +91,12 @@
 				<Tabs.Content value="search">
 					<Search></Search>
 				</Tabs.Content>
+				<Tabs.Content value="addActivity">
+					<AddActivity></AddActivity>
+				</Tabs.Content>
 			</Tabs.Root>
 		{/if}
 	</nav>
 {/if}
+
 <div bind:this={mapDiv} class="z-0 h-dvh"></div>

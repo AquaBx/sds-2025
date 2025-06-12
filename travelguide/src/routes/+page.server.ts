@@ -76,5 +76,20 @@ export const actions: Actions = {
         return {
             activities
         }
+    },
+
+    addActivity: async ({ request }) => {
+        const formData = await request.formData();
+        const data = {
+            name: formData.get('name'),
+            description: formData.get('description'),
+            price: Number(formData.get('price')),
+            openingTime: formData.get('openingTime'),
+            closingTime: formData.get('closingTime'),
+            city: formData.get('city'),
+            tags: [formData.get('tag')],
+        };
+        await pb.collection('activities').create(data);
+        return { success: true };
     }
 }
