@@ -4,7 +4,6 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { onMount } from 'svelte';
 	import PocketBase from 'pocketbase';
-  	import { goto } from '$app/navigation';
   	import * as Card from '$lib/components/ui/card/index.js';
 	export let place: Place;
 
@@ -88,8 +87,8 @@
 				<Icon src={HourglassMedium} theme="solid" class="color-gray-900 size-4" />
 				<p>{place.estimatedDuration} {place.estimatedDuration <= 1 ? 'hour' : 'hours'}</p>
 			</div>
-			<div class="flex items-center gap-1"
-				on:mouseenter={() => showVote = true}
+			<div class="flex items-center ml-2 gap-1" 
+				on:mouseenter={() => { if (user) showVote = true; }}
 				on:mouseleave={() => { showVote = false; hoveredScore = 0; }}
 			>
 				{#if !showVote || userScore}
@@ -104,29 +103,31 @@
 					{/each}
 					<span class="ml-2 text-sm text-gray-600">({place.score?.toFixed(1) ?? 'N/A'})</span>
 				{:else}
-					{#each Array(5) as _, i}
-						<button
-							type="button"
-							class="focus:outline-none"
-							on:click={() => ratePlace(i + 1)}
-							on:mouseenter={() => hoveredScore = i + 1}
-							on:mouseleave={() => hoveredScore = 0}
-							aria-label="Give {i + 1} stars"
-						>
-							<Icon
-								src={Star}
-								theme="fill"
-								class="size-4 transition-colors duration-150 {i < (hoveredScore || userScore) ? 'text-yellow-400' : 'text-gray-300'}"
-							/>
-						</button>
-					{/each}
+					{#if user}
+						{#each Array(5) as _, i}
+							<button
+								type="button"
+								class="focus:outline-none"
+								on:click={() => ratePlace(i + 1)}
+								on:mouseenter={() => hoveredScore = i + 1}
+								on:mouseleave={() => hoveredScore = 0}
+								aria-label="Give {i + 1} stars"
+							>
+								<Icon
+									src={Star}
+									theme="fill"
+									class="size-4 transition-colors duration-150 {i < (hoveredScore || userScore) ? 'text-yellow-400' : 'text-gray-300'}"
+								/>
+							</button>
+						{/each}
+					{/if}
 				{/if}
 				{#if userScore}
 					<span class="ml-2 text-xs text-green-600">Voted {userScore} stars !</span>
 				{/if}
 			</div>
 		</div>
-			<div class="flex items-center gap-1 text-sm font-semibold">
+			<div class="flex items-center mt-2 gap-1 text-sm font-semibold">
 				<Icon src={DoorOpen} theme="solid" class="color-gray-900 size-4" />
 				<p>{place.openingTime}</p>
 			</div>
