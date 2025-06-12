@@ -15,7 +15,7 @@ export const actions: Actions = {
     guide: async (event) => {
         const formData = await event.request.formData();
 
-        const interests = String(formData.get("tags") || "").split(",");
+        const interests = formData.getAll("tags") || []
         const budget = formData.get("budget")!;
         const currency = formData.get("currency")!;
         const startDate = formData.get("startDate")!;
@@ -114,8 +114,9 @@ export const actions: Actions = {
     },
 
     search: async (event) => {
+
         const formData = await event.request.formData();
-        const interests = String(formData.get("tags") || "").split(",");
+        const interests = formData.getAll("tags") || []
         const search = String(formData.get("search") || "");
         const hourRange = String(formData.get("hourRange") || "00,24").split(",").map((h: string) => h.length === 1 ? `0${h}` : h);
         const maxPrice = formData.get("maxPrice") || 1000

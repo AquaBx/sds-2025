@@ -1,12 +1,11 @@
 <script lang="ts">
 	import type { Place } from '$lib/types';
 	import { DoorOpen, HourglassMedium, Wheelchair, Star, StarHalf } from '@steeze-ui/phosphor-icons';
-
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { onMount } from 'svelte';
 	import PocketBase from 'pocketbase';
-  import { goto } from '$app/navigation';
-  import * as Card from '$lib/components/ui/card/index.js';
+  	import { goto } from '$app/navigation';
+  	import * as Card from '$lib/components/ui/card/index.js';
 	export let place: Place;
 
 	let userScore = 0;
@@ -24,10 +23,7 @@
     });
 
     async function ratePlace(score: number) {
-        if (!user) {
-            goto('/auth/login');
-            return;
-        }
+        
         userScore = score;
         showVote = false;
 		let existingVote: any = null;
@@ -80,7 +76,7 @@
 			src={place.picture}
 			alt={place.name}
 		/>
-		<div class="flex flex-1 flex-row gap-1">
+		<div class="flex flex-1 flex-row gap-1 mt-2">
 			<!-- <div class="mb-2 text-base">{place.type}</div> -->
 			{#if place.disableAccessibility}
 				<div class="flex items-center gap-1 text-sm font-semibold">
@@ -92,7 +88,7 @@
 				<Icon src={HourglassMedium} theme="solid" class="color-gray-900 size-4" />
 				<p>{place.estimatedDuration} {place.estimatedDuration <= 1 ? 'hour' : 'hours'}</p>
 			</div>
-			<div class="flex items-center gap-1 mb-2 ml-2"
+			<div class="flex items-center gap-1"
 				on:mouseenter={() => showVote = true}
 				on:mouseleave={() => { showVote = false; hoveredScore = 0; }}
 			>

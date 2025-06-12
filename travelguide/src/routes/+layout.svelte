@@ -11,9 +11,9 @@
 
 	onMount(() => {
 		// Redirect to /auth if not logged in and trying to access a protected route
-		if (!pb.authStore.isValid && !location.pathname.startsWith('/auth')) {
+		/* if (!pb.authStore.isValid && !location.pathname.startsWith('/auth')) {
 			goto('/auth');
-		}
+		} */
 	});
 </script>
 

@@ -7,10 +7,10 @@
 	let mounted = false;
 
 	onMount(() => {
-		if (!pb.authStore.isValid) {
+		/* if (!pb.authStore.isValid) {
 			goto('/auth');
 			return;
-		}
+		} */
 		user = pb.authStore.model;
 		mounted = true;
 	});
